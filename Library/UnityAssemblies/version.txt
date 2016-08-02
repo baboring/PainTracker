@@ -1,0 +1,5 @@
+4.5.5f1:2.3.0.0
+Android
+C:/Program Files (x86)/Unity/Editor/Data/PlaybackEngines/AndroidPlayer/Managed/UnityEngine.dll
+C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll
+C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.Graphs.dll
