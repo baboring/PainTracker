@@ -3,13 +3,17 @@ using System.Collections;
 
 public class Human : MonoBehaviour {
 
-	public static Human instance;
+    public Animator ani;
+    public static Human instance;
 
+    void Awake() {
+        ani = GetComponent<Animator>();
+        instance = this;
+    }
 	// Use this for initialization
-	public Animator ani;
+	
 	void Start () {
-		ani = GetComponent<Animator>();
-		instance = this;
+        
 	}
 
 	public void OnPlay() {
