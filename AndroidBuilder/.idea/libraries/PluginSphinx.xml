@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="PluginSphinx">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/libs/PluginSphinx.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
