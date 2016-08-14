@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
-using PocketSphinx;
+using CMUPocketSphinx;
 
 namespace HC {
     public class ShpinxVoiceRecognizeDemo : MonoBehaviour {
 
-        SphinxVoiceRecognizer recognizer;
+        CMUSphinxVoiceRecognizer recognizer;
         // Use this for initialization
         void Start() {
             if (SystemConfig.IsDebugOn) {
@@ -15,7 +15,7 @@ namespace HC {
             }
 
             // attach Voice Recognizer
-            recognizer = gameObject.AddComponent<SphinxVoiceRecognizer>();
+            recognizer = gameObject.AddComponent<CMUSphinxVoiceRecognizer>();
 
             recognizer.callbackSay = OnSaySomething;
 
@@ -71,7 +71,7 @@ namespace HC {
         }
         public void _OnHypothsisResult(string text) {
             Main.instance.SetSpeechText("");
-            SphinxPluginAndroid._ToastShow(text);
+            CMUSphinxAndroid._ToastShow(text);
         }
 
         public void _OnWakeup(string msg) {

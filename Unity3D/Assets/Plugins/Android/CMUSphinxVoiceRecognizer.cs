@@ -4,9 +4,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace PocketSphinx
+namespace CMUPocketSphinx
 {
-    public class SphinxVoiceRecognizer : MonoBehaviour
+    public class CMUSphinxVoiceRecognizer : MonoBehaviour
     {
         private const string FUNC_LOG = "_OnLog";
 
@@ -17,13 +17,13 @@ namespace PocketSphinx
         {
             _currentGUID = System.Guid.NewGuid().ToString();
             gameObject.name = gameObject.name + _currentGUID;
-            SphinxPluginAndroid.Init(gameObject.name);
+            CMUSphinxAndroid.Init(gameObject.name);
         }
 
         IEnumerator Start() {
             yield return Application.RequestUserAuthorization(UserAuthorization.Microphone);
             if (Application.HasUserAuthorization(UserAuthorization.Microphone)) {
-                bool result = SphinxPluginAndroid._Create(false);
+                bool result = CMUSphinxAndroid._Create(false);
             }
             else {
 
@@ -79,29 +79,29 @@ namespace PocketSphinx
         public void _OnWakeup(string msg) {
             //SphinxPluginAndroid._StopListening();
             SetTimer(0, 4000, () => {
-                SphinxPluginAndroid._StartListening(SphinxPluginAndroid.BODY_SEARCH, 10000);
+                CMUSphinxAndroid._StartListening(CMUSphinxAndroid.BODY_SEARCH, 10000);
             });
         }
 
         public void _OnHypothsisPartialResult(string text) {
-            switch (SphinxPluginAndroid._CurrentSearchName()) {
-                case SphinxPluginAndroid.KWS_SEARCH:
+            switch (CMUSphinxAndroid._CurrentSearchName()) {
+                case CMUSphinxAndroid.KWS_SEARCH:
                     //if (text.Equals(SphinxPluginAndroid.KWS_PHRASE))
                     //SphinxPluginAndroid._SwitchSearch(SphinxPluginAndroid.MENU_SEARCH);
                     break;
                 // select menu
-                case SphinxPluginAndroid.MENU_SEARCH:
+                case CMUSphinxAndroid.MENU_SEARCH:
                     
-                    if (text.Equals(SphinxPluginAndroid.BODY_SEARCH))
-                        SphinxPluginAndroid._SwitchSearch(SphinxPluginAndroid.BODY_SEARCH);
-                    else if (text.Equals(SphinxPluginAndroid.DIGITS_SEARCH))
-                        SphinxPluginAndroid._SwitchSearch(SphinxPluginAndroid.DIGITS_SEARCH);
-                    else if (text.Equals(SphinxPluginAndroid.PHONE_SEARCH))
-                        SphinxPluginAndroid._SwitchSearch(SphinxPluginAndroid.PHONE_SEARCH);
-                    else if (text.Equals(SphinxPluginAndroid.FORECAST_SEARCH))
-                        SphinxPluginAndroid._SwitchSearch(SphinxPluginAndroid.FORECAST_SEARCH);
-                    else if (text.Equals(SphinxPluginAndroid.GREET_SEARCH))
-                        SphinxPluginAndroid._SwitchSearch(SphinxPluginAndroid.GREET_SEARCH);
+                    if (text.Equals(CMUSphinxAndroid.BODY_SEARCH))
+                        CMUSphinxAndroid._SwitchSearch(CMUSphinxAndroid.BODY_SEARCH);
+                    else if (text.Equals(CMUSphinxAndroid.DIGITS_SEARCH))
+                        CMUSphinxAndroid._SwitchSearch(CMUSphinxAndroid.DIGITS_SEARCH);
+                    else if (text.Equals(CMUSphinxAndroid.PHONE_SEARCH))
+                        CMUSphinxAndroid._SwitchSearch(CMUSphinxAndroid.PHONE_SEARCH);
+                    else if (text.Equals(CMUSphinxAndroid.FORECAST_SEARCH))
+                        CMUSphinxAndroid._SwitchSearch(CMUSphinxAndroid.FORECAST_SEARCH);
+                    else if (text.Equals(CMUSphinxAndroid.GREET_SEARCH))
+                        CMUSphinxAndroid._SwitchSearch(CMUSphinxAndroid.GREET_SEARCH);
                     //switch(text) {
                     //    case SphinxPluginAndroid.BODY_SEARCH:
                     //    case SphinxPluginAndroid.DIGITS_SEARCH:
@@ -113,8 +113,8 @@ namespace PocketSphinx
                     //}
 
                     break;
-                case SphinxPluginAndroid.BODY_SEARCH:
-                    SphinxPluginAndroid._StopListening();
+                case CMUSphinxAndroid.BODY_SEARCH:
+                    CMUSphinxAndroid._StopListening();
                     break;
                 default:
                     break;
@@ -122,12 +122,12 @@ namespace PocketSphinx
         }
 
         void AnswerAndRestart(string text) {
-            SphinxPluginAndroid._StopListening();
+            CMUSphinxAndroid._StopListening();
             if (null != callbackSay)
                 callbackSay(text);
 
             SetTimer(0, 1200, () => {
-                SphinxPluginAndroid._StartListening(SphinxPluginAndroid.KWS_SEARCH);
+                CMUSphinxAndroid._StartListening(CMUSphinxAndroid.KWS_SEARCH);
                 //if (text.Equals(SphinxPluginAndroid.BODY_SEARCH))
                 //    SphinxPluginAndroid._StartListening(text, 10000);
                 //else if (text.Equals(SphinxPluginAndroid.DIGITS_SEARCH))
@@ -142,8 +142,8 @@ namespace PocketSphinx
         public void _OnHypothsisResult(string text) {
             Debug.Log("_OnHypothsisResult::" + text);
 
-            switch (SphinxPluginAndroid._CurrentSearchName()) {
-                case SphinxPluginAndroid.BODY_SEARCH:
+            switch (CMUSphinxAndroid._CurrentSearchName()) {
+                case CMUSphinxAndroid.BODY_SEARCH:
                     //SphinxPluginAndroid._SwitchSearch("_");
                     AnswerAndRestart(text);
                     break;
@@ -174,15 +174,15 @@ namespace PocketSphinx
 
 
         public void _OnTimeout(string msg) {
-            SphinxPluginAndroid._SwitchSearch(SphinxPluginAndroid.KWS_SEARCH);
+            CMUSphinxAndroid._SwitchSearch(CMUSphinxAndroid.KWS_SEARCH);
         }
         public void Notice(string msg)
         {
-            SphinxPluginAndroid._DispatchMessage(FUNC_LOG, msg);
+            CMUSphinxAndroid._DispatchMessage(FUNC_LOG, msg);
         }
 
         public void Dispose() {
-            SphinxPluginAndroid._Dispose();
+            CMUSphinxAndroid._Dispose();
         }
 
     }

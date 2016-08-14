@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace PocketSphinx
+namespace CMUPocketSphinx
 {
-    static public class SphinxPluginAndroid
+    static public class CMUSphinxAndroid
     {
         public const string KEYPHRASE = "hello pretty aden";
         public const string KWS_SEARCH = "wakeup";
@@ -25,7 +25,7 @@ namespace PocketSphinx
         {
             bool result = false;
             if (Application.platform == RuntimePlatform.Android)  {
-                sphinxHandle = new AndroidJavaClass("edu.cmu.pocketsphinx.Plugin.AndroidPlugin");
+                sphinxHandle = new AndroidJavaClass("com.narith.pocketsphinx_forunity3d.RecognizerForUnity3d");
                 DebugTools.Assert(null == sphinxHandle, "sphinxHandle is fail to initialize!!");
                 result = sphinxHandle.CallStatic<bool>("_Init", name);
             }
