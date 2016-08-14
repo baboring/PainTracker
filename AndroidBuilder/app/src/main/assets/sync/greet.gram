@@ -1,0 +1,6 @@
+#JSGF V1.0;
+/**
+ * JSGF Grammar for Hello World example
+ */
+grammar hello;
+public <greet> = (good morning | good evening | hello | what's up) ( aden | benjamin | paul | philip | rita | will );

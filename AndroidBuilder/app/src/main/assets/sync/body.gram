@@ -1,0 +1,29 @@
+#JSGF V1.0;
+
+grammar body;
+
+public <item> = 
+	head | 
+	neck |
+	throat
+	chest |
+	back |
+	shoulder |
+	hand |
+	arm |
+	foot |
+	let |
+	joint |
+	thigh |
+	toe |
+	elbow |
+	ankle |
+	heel |
+	knee |
+	stomach |
+	waist |
+	finger |
+	eye |
+	nose |
+	tooth |
+	bottom;

@@ -16,7 +16,10 @@ public class Human : MonoBehaviour {
         
 	}
 
-	public void OnPlay() {
+    public void OnPlay() {
+
+    }
+	public void OnTouch() {
 		string[] anyList = {
 			"idle",
 			"breathing_idle",
@@ -39,15 +42,25 @@ public class Human : MonoBehaviour {
 		//EasyTTSUtil.SpeechAdd(aniName);
 
 	}
-	public void OnTurnLeft() {
-		ani.CrossFade("standing_greeting", 0.05f);
-		//EasyTTSUtil.SpeechAdd("Left");
-	}
-	public void OnTurnRight()
-	{
-		ani.CrossFade("yelling", 0.05f);
-		//EasyTTSUtil.SpeechAdd("Right");
-	}
+	
+    public void filterAnimation(string text) {
+        switch (text) {
+            case "hi":
+            case "hello":
+                ani.CrossFade("standing_greeting", 0.05f);
+                break;
+            case "head":
+            case "arm":
+                ani.CrossFade("sad_idle", 0.05f);
+                break;
+            case "thigh":
+                ani.CrossFade("yelling", 0.05f);
+                break;
+            case "foot":
+                ani.CrossFade("relieved_sigh", 0.05f);
+                break;
+        }
+    }
 
 	public void OnSay(string something, string animation = "")
 	{

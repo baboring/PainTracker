@@ -187,7 +187,7 @@ public class EasyTTSUtil
 		AndroidJavaClass cls_UnityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
 		return cls_jni.CallStatic<string[]>("getEnginePkgArray");
 		#endif
-		Debug.LogError ("GetEnginePkgArray is only for android");
+		Debug.LogWarning("GetEnginePkgArray is only for android");
 		return null;
 	}
 	
@@ -219,7 +219,7 @@ public class EasyTTSUtil
 		AndroidJavaClass cls_UnityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
 		return cls_jni.CallStatic<string[]>("getEngineNameArray");
 		#endif
-		Debug.LogError ("GetEngineNameArray is only for android");
+		Debug.LogWarning("GetEngineNameArray is only for android");
 			               
 		return null;
 	}
