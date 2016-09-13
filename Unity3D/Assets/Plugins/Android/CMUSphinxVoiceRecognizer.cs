@@ -23,7 +23,7 @@ namespace CMUPocketSphinx
         IEnumerator Start() {
             yield return Application.RequestUserAuthorization(UserAuthorization.Microphone);
             if (Application.HasUserAuthorization(UserAuthorization.Microphone)) {
-                bool result = CMUSphinxAndroid._Create(false);
+                bool result = CMUSphinxAndroid._Create();
             }
             else {
 
@@ -96,8 +96,6 @@ namespace CMUPocketSphinx
                         CMUSphinxAndroid._SwitchSearch(CMUSphinxAndroid.BODY_SEARCH);
                     else if (text.Equals(CMUSphinxAndroid.DIGITS_SEARCH))
                         CMUSphinxAndroid._SwitchSearch(CMUSphinxAndroid.DIGITS_SEARCH);
-                    else if (text.Equals(CMUSphinxAndroid.PHONE_SEARCH))
-                        CMUSphinxAndroid._SwitchSearch(CMUSphinxAndroid.PHONE_SEARCH);
                     else if (text.Equals(CMUSphinxAndroid.FORECAST_SEARCH))
                         CMUSphinxAndroid._SwitchSearch(CMUSphinxAndroid.FORECAST_SEARCH);
                     else if (text.Equals(CMUSphinxAndroid.GREET_SEARCH))
