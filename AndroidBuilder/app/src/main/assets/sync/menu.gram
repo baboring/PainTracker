@@ -4,6 +4,5 @@ grammar menu;
 
 public <item> = digits |
                 forecast |
-                phones |
                 body |
                 greet;

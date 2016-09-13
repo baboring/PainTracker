@@ -5,14 +5,14 @@
         jar="D:\Workspace\Project.Health\trunk\AndroidBuilder\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
         jumboMode="true"
         revision="24.0.1"
-        sha1="5c84d4a7e254cbb6d899c17df9e7243d386553c6">
+        sha1="3003b8e531431f3bc54ff60957ea8b5ee9fbecfc">
         <dex dex="D:\Workspace\Project.Health\trunk\AndroidBuilder\app\build\intermediates\pre-dexed\debug\instant-run-bootstrap_edd15e6ed0abb8b90b56788562505341fc28f751.jar" />
     </item>
     <item
         jar="D:\Workspace\Project.Health\trunk\AndroidBuilder\app\libs\PocketSphinx-ForUnity3d.jar"
         jumboMode="true"
         revision="24.0.1"
-        sha1="011f3eee4a964b0fd816834b8ce7fc46dbb4fe6a">
+        sha1="bb06140e8789219e43583a92e08d00207608f3c5">
         <dex dex="D:\Workspace\Project.Health\trunk\AndroidBuilder\app\build\intermediates\pre-dexed\debug\PocketSphinx-ForUnity3d_2be745a76076f56b7ab7ffa9276f43d9026cfa25.jar" />
     </item>
     <item
@@ -33,7 +33,7 @@
         jar="D:\Workspace\Project.Health\trunk\AndroidBuilder\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
         revision="24.0.1"
-        sha1="aa9df31b704f7ef884a70eaaaa734683c3a429aa">
+        sha1="e8ca542094b0cbd6c709f448e9c7bcfda4830abe">
         <dex dex="D:\Workspace\Project.Health\trunk\AndroidBuilder\app\build\intermediates\pre-dexed\debug\instant-run_d0ac2117597e187e61431ac4d612336702d79f82.jar" />
     </item>
     <item
