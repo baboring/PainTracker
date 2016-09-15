@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [AddComponentMenu("NGUI/Examples/Spin With Mouse")]
-public class SpinWithMouse : MonoBehaviour
+public class SpinWithMouseXY : MonoBehaviour
 {
 	public Transform target;
 	public float speed = 1f;
@@ -19,11 +19,11 @@ public class SpinWithMouse : MonoBehaviour
 
 		if (target != null)
 		{
-			target.localRotation = Quaternion.Euler(0f, -0.5f * delta.x * speed, 0f) * target.localRotation;
+			target.localRotation = Quaternion.Euler(0.5f * delta.y * speed, -0.5f * delta.x * speed, 0f) * target.localRotation;
 		}
 		else
 		{
-			mTrans.localRotation = Quaternion.Euler(0f, -0.5f * delta.x * speed, 0f) * mTrans.localRotation;
+			mTrans.localRotation = Quaternion.Euler(0.5f * delta.y * speed, -0.5f * delta.x * speed, 0f) * mTrans.localRotation;
 		}
 	}
 }
