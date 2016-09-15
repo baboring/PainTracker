@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using HC;
 
-public class SystemConfig {
+public class SystemConfig : SystemBase {
 
-    static public bool IsDebugOn { get {return true; }  }
+	//static public bool IsDebugOn { get {return true; }  }
 }

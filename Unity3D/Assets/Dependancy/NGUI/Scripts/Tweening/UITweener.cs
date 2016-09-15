@@ -142,7 +142,7 @@ public abstract class UITweener : MonoBehaviour
 	/// This function is called by Unity when you add a component. Automatically set the starting values for convenience.
 	/// </summary>
 
-	void Reset ()
+	public void Reset ()
 	{
 		if (!mStarted)
 		{

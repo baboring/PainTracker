@@ -4,11 +4,10 @@ using System.Collections;
 public class Human : MonoBehaviour {
 
     public Animator ani;
-    public static Human instance;
 
     void Awake() {
-        ani = GetComponent<Animator>();
-        instance = this;
+		if(null == ani)
+	       ani = GetComponent<Animator>();
     }
 	// Use this for initialization
 	

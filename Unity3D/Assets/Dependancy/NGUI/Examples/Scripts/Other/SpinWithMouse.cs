@@ -23,7 +23,7 @@ public class SpinWithMouse : MonoBehaviour
 		}
 		else
 		{
-			mTrans.localRotation = Quaternion.Euler(0f, -0.5f * delta.x * speed, 0f) * mTrans.localRotation;
+			mTrans.localRotation = Quaternion.Euler(0.5f * delta.y * speed, -0.5f * delta.x * speed, 0f) * mTrans.localRotation;
 		}
 	}
 }

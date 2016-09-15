@@ -5,7 +5,7 @@ using CMUPocketSphinx;
 namespace HC {
     public class ShpinxVoiceRecognizeDemo : MonoBehaviour {
 
-        CMUSphinxVoiceRecognizer recognizer;
+        VoiceRecognizer recognizer;
         // Use this for initialization
         void Start() {
             if (SystemConfig.IsDebugOn) {
@@ -15,7 +15,7 @@ namespace HC {
             }
 
             // attach Voice Recognizer
-            recognizer = gameObject.AddComponent<CMUSphinxVoiceRecognizer>();
+            recognizer = gameObject.AddComponent<VoiceRecognizer>();
 
             recognizer.callbackSay = OnSaySomething;
 
@@ -31,7 +31,7 @@ namespace HC {
             OnVoiceRecordOff();
             EasyTTSUtil.SpeechAdd(txt);
             Debug.Log("OnSaySomething : " + txt);
-            Human.instance.filterAnimation(txt);
+			WindowManager.GetWindow<wndMain>().objHuman.filterAnimation(txt);
 
             switch (txt) {
                 case "head" :
@@ -50,27 +50,27 @@ namespace HC {
         }
 
         void OnVoiceRecordOn() {
-            Main.instance.objRecording.SetActive(true);
+			WindowManager.GetWindow<wndMain>().OnVoiceRecordOn();
         }
         void OnVoiceRecordOff() {
-            Main.instance.objRecording.SetActive(false);
-        }
-        void OnVoiceRecording() {
-            Main.instance.objRecording.SetActive(true);
-        }
+			WindowManager.GetWindow<wndMain>().OnVoiceRecordOff();
+		}
+		void OnVoiceRecording() {
+			WindowManager.GetWindow<wndMain>().OnVoiceRecordOn();
+		}
 
-        public void _OnPostExecute(string msg) {
+		public void _OnPostExecute(string msg) {
             OnVoiceRecordOn();
         }
 
 
         public void _OnHypothsisPartialResult(string text) {
-            Main.instance.lblHelpMessage.text = "";
-            Main.instance.SetSpeechText(text);
-            Human.instance.filterAnimation(text);
+
+			WindowManager.GetWindow<wndMain>().SetHelpMessage("");
+			WindowManager.GetWindow<wndMain>().SetSpeechText(text);
         }
         public void _OnHypothsisResult(string text) {
-            Main.instance.SetSpeechText("");
+			WindowManager.GetWindow<wndMain>().SetSpeechText("");
             CMUSphinxAndroid._ToastShow(text);
         }
 
@@ -84,24 +84,17 @@ namespace HC {
         public void _OnStopLisnening(string msg) {
             OnVoiceRecordOff();
         }
-        public void _OnStartListening(string msg) {
+        public void _OnStartListening(string mode) {
             OnVoiceRecordOn();
-            switch(msg){
-                case "wakeup":
-                    Main.instance.lblHelpMessage.text = "(Say) Hello, Pretty Aden!!";
-                    break;
-                case "body":
-                    Main.instance.lblHelpMessage.text = "Which part do you have pain? ( \"Head\", \"Stomach\", \"Thigh\" )";
-                    break;
-            }
+			WindowManager.GetWindow<wndMain>().OnStartListening(mode);
         }
 
 
         public void _OnBeginningOfSpeech(string msg) {
-            Main.instance.objListening.SetActive(true);
+			WindowManager.GetWindow<wndMain>().ShowWave(true, msg);
         }
         public void _OnEndOfSpeech(string msg) {
-            Main.instance.objListening.SetActive(false);
+			WindowManager.GetWindow<wndMain>().ShowWave(false, msg);
         }
 
         public void _OnTimeout(string msg) {

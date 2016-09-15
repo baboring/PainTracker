@@ -9,15 +9,10 @@ namespace HC {
         NONE,
     }
 
-    public class Main : MonoBehaviour {
-
-        public GameObject objRecording;
-        public GameObject objListening;
+    public class Main : ManualSingletonMB<Main>
+	{
         public GameObject objHideMenu;
 
-
-        public UILabel lblTextSpeech;
-        public UILabel lblHelpMessage;
 
         /// <summary>
         /// camera
@@ -46,36 +41,38 @@ namespace HC {
         // Use this for initialization
 
         void Awake() {
-            instance = this;
-        }
+			instance = this;
+			DontDestroyOnLoad(instance);
+			MainStateManager.CreateInstance();
 
-        IEnumerator Start() {
-            EasyTTSUtil.Initialize(EasyTTSUtil.UnitedStates);
+		
+		}
+
+		void Start() {
+
+			td = cameraTrans.Clone();
+
+			EasyTTSUtil.Initialize(EasyTTSUtil.UnitedStates);
+			nameArray = EasyTTSUtil.GetEngineNameArray();
+			pkgArray = EasyTTSUtil.GetEnginePkgArray();
+
+			if (null != pkgArray)
+				foreach (var item in pkgArray) {
+					popupList.AddItem(item);
+				}
+			Initial();
+			OnStartup();
+		}
 
 
-            nameArray = EasyTTSUtil.GetEngineNameArray();
-            pkgArray = EasyTTSUtil.GetEnginePkgArray();
+		public void OnStartup()
+		{
+			MainStateManager.ChangeState(eMainState.Splash);
+			MainStateManager.ChangeState(eMainState.Main);
+		}
 
-            if (null != pkgArray)
-                foreach (var item in pkgArray) {
-                    popupList.AddItem(item);
-                }
-
-            // Initialize
-            Initial();
-
-            // welcome message
-            yield return new WaitForSeconds(2);
-            //EasyTTSUtil.SpeechAdd("Welcome");
-
-        }
-
-        TransformData td;
+		TransformData td;
         void Initial() {
-            lblHelpMessage.text = "Hello, Pretty Aden";
-            SetSpeechText("");
-            objRecording.SetActive(false);
-            objListening.SetActive(false);
             td = cameraTrans.Clone();
         }
         public void OpenSetting() {
@@ -90,13 +87,6 @@ namespace HC {
         public void QuickProgram() {
             Application.Quit();
         }
-
-        public void SetSpeechText(string text) {
-            lblTextSpeech.text = text;
-        }
-        public void SetHelpMessage(string text) {
-            lblHelpMessage.text = text;
-        }
         public string myName = "Benjamin";
         public void OnSay() {
 
@@ -110,7 +100,7 @@ namespace HC {
             //string saySomething = string.Format("My name is %s.", uiInput.value);
             if (uiInput.value.Length > 0)
                 myName = uiInput.value;
-            Human.instance.OnSay("My name is " + myName, "shaking_hands_2");
+			WindowManager.GetWindow<wndMain>().objHuman.OnSay("My name is " + myName, "shaking_hands_2");
             SetZoomInOut(ZOOM_ID.NONE, false);
         }
         // Update is called once per frame
@@ -193,5 +183,6 @@ namespace HC {
             }
         }
 
-    }
+	}
+
 }

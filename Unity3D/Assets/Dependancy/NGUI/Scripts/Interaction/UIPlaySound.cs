@@ -22,6 +22,7 @@ public class UIPlaySound : MonoBehaviour
 		Custom,
 		OnEnable,
 		OnDisable,
+		OnTrigger,
 	}
 
 	public AudioClip audioClip;
