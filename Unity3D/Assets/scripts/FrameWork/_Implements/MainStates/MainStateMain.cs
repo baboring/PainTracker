@@ -16,6 +16,7 @@ namespace HC
 			eInitialWindows = new WndID[] {
 				WndID.WndMain,
 				WndID.WndSetting,
+				WndID.WndMenu,
 			};
 		}
 

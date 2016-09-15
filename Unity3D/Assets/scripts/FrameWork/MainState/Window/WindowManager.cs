@@ -34,10 +34,12 @@ namespace HC
 
 		new void Awake()
 		{
-			gameObject.layer = LayerMask.NameToLayer("UI");
 			var uiRoot = gameObject.AddComponent<UIRoot>();
-            uiRoot.scalingStyle = UIRoot.Scaling.ConstrainedOnMobiles;
+			uiRoot.scalingStyle = UIRoot.Scaling.ConstrainedOnMobiles;
+			uiRoot.manualWidth = 640;
 			uiRoot.manualHeight = 1136;
+			gameObject.layer = LayerMask.NameToLayer("UI");
+			gameObject.AddComponent<UIPanel>().depth = 2;
 
 			ClearAll();
 
@@ -87,7 +89,6 @@ namespace HC
 				DestroyImmediate(_objRoot);
 			_objRoot = new GameObject();
 			_objRoot.name = "Root";
-			_objRoot.AddComponent<UIPanel>().depth = 2;
 			_objRoot.transform.parent = gameObject.transform;
 			_objRoot.transform.localScale = new Vector3(1, 1, 1);
 			_objRoot.transform.localPosition = new Vector3(0, 0, DEPTH_STEP);
@@ -98,10 +99,10 @@ namespace HC
 				DestroyImmediate(_objHide);
 			_objHide = new GameObject();
 			_objHide.name = "Hide";
-			_objHide.AddComponent<UIPanel>();
 			_objHide.transform.parent = gameObject.transform;
 			_objHide.transform.localScale = new Vector3(1, 1, 1);
 			_objHide.transform.localPosition = new Vector3(0, 0, DEPTH_STEP);
+			_objHide.layer = LayerMask.NameToLayer("UI");
 		}
 
 		// =============================================================================

@@ -15,6 +15,7 @@ namespace HC
         WndMain = 0,					// Lobby 진정한 메인이다.
         WndPlay,
         WndSetting,
+		WndMenu,						// main menu
         Max
 	}
 

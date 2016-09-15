@@ -16,6 +16,7 @@ namespace HC
 		Logon,
 		Main,
 		Setting,
+		Menu
 	}
 
 	public delegate void NotifyRestart();		// 리부팅 알림
@@ -78,6 +79,7 @@ namespace HC
 			AddGameState(eMainState.Splash, this.gameObject.AddComponent<MainStateSplash>());
 			AddGameState(eMainState.Bootup, this.gameObject.AddComponent<MainStateBootup>());
             AddGameState(eMainState.Main, this.gameObject.AddComponent<MainStateMain>());
+			AddGameState(eMainState.Menu, this.gameObject.AddComponent<MainStateMenu>());
 
 
 			Initialization();

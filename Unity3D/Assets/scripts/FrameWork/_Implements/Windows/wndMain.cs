@@ -21,8 +21,7 @@ namespace HC
             base.Awake();
 
 			ButtonHandler.CreateHandle(0, objMenuButton, true, true, (btn) => {
-				//MainStateManager.ChangeState(eMainState.Setting);
-				WindowManager.OpenPopup(WndID.WndSetting);
+				MainStateManager.ChangeState(eMainState.Menu);
 			});
 
 		}
