@@ -26,9 +26,15 @@ namespace HC
 			ButtonHandler.CreateHandle(0, objBtnSetting, true, true, (btn) => {
 				WindowManager.OpenPopup(WndID.WndSetting);
 			});
+
+			// extra button
+			ButtonHandler.CreateHandle(0, objBtnExtra, true, true, (btn) => {
+				TTSHelper.OpenTTSSetting();
+			});
+
 			// Help button
 			ButtonHandler.CreateHandle(0, objBtnHelp, true, true, (btn) => {
-				
+				WindowManager.GetWindow<wndMain>().objHuman.OnSay("What may I help you?", "shaking_hands_2");
 			});
 		}
 

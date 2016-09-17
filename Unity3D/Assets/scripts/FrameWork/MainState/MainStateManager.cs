@@ -56,22 +56,17 @@ namespace HC
 
 		public override void Initial()
 		{
-			Logger.InfoFormat("GSM Initialization !!");
 			base.Initial();
+			Logger.InfoFormat("GSM Initialization !!");
 		}
-
+		void OnApplicationQuit()
+		{
+			TTSHelper.Stop();
+		}
 
 		protected override void Awake()
 		{
 			base.Awake();
-
-			Logger.InfoFormat("GSM Awake !!");
-
-			//GlobalData.CreateInstance();
-
-			//PushManager.CreateInstance();
-
-
 			// windowManager 초기화를 여기서 먼저 해주자.
 			WindowManager.CreateInstance();
 
@@ -85,25 +80,28 @@ namespace HC
 			Initialization();
 		}
 
-
-		static public T Get<T>() where T : MainStateBase
-		{
-			var result = instance.lstGameState.Values.Where(p => (null != p && p.GetType() == typeof(T)));
-			if (result.Count() < 1)
-				return default(T);
-			return (T)result.First();
-		}
-
-		void AddGameState(eMainState estate, MainStateBase cmpStateBase)
-		{
-			cmpStateBase.transform.parent = gameObject.transform;
-			lstGameState.Add(estate, cmpStateBase);
-		}
-
 		private void Initialization()
 		{
             // table resource create
             R.Create();
+
+			SceneLoader.CreateInstance();
+			Logger.InfoFormat("GSM Awake !!");
+
+			//GlobalData.CreateInstance();
+
+			//PushManager.CreateInstance();
+
+
+			//EasyTTSUtil.Initialize(EasyTTSUtil.UnitedStates);
+			//nameArray = EasyTTSUtil.GetEngineNameArray();
+			//pkgArray = EasyTTSUtil.GetEnginePkgArray();
+
+			//if (null != pkgArray)
+			//	foreach (var item in pkgArray) {
+			//		popupList.AddItem(item);
+			//	}
+
 
 			// 개인 정보 생성
 			PlayerSaveInfo.CreateInstance();
@@ -216,6 +214,19 @@ namespace HC
 				currGameState.OnUpdate();
 		}
 
+		static public T Get<T>() where T : MainStateBase
+		{
+			var result = instance.lstGameState.Values.Where(p => (null != p && p.GetType() == typeof(T)));
+			if (result.Count() < 1)
+				return default(T);
+			return (T)result.First();
+		}
+
+		void AddGameState(eMainState estate, MainStateBase cmpStateBase)
+		{
+			cmpStateBase.transform.parent = gameObject.transform;
+			lstGameState.Add(estate, cmpStateBase);
+		}
 	}
 
 }

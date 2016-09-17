@@ -31,10 +31,8 @@ namespace HC
                 }
             }
 			IsLoadComplete = true;
-            //DestroyObject(this.gameObject);
+            DestroyObject(this.gameObject);
         }
-
-		// 코루틴으로 시작해보자
 		
     }
 }

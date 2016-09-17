@@ -79,15 +79,15 @@ namespace HC
 		// - 해상도에 따라서 변경될수 있도록함.
 		static public void ReSizeClipping(UIPanel _panel)
 		{
-			var origin_size_w = _panel.clipRange.w;
-			var origin_size_x = _panel.clipRange.x;
-			var origin_size_y = _panel.clipRange.y;
-			var origin_size_z = _panel.clipRange.z;
+			var origin_size_w = _panel.baseClipRegion.w;
+			var origin_size_x = _panel.baseClipRegion.x;
+			var origin_size_y = _panel.baseClipRegion.y;
+			var origin_size_z = _panel.baseClipRegion.z;
 
 			var resize_z = (origin_size_z * Screen.width) / SystemConfig.DefScreenWidth;
 			var resize_w = (origin_size_w * Screen.height) / SystemConfig.DefScreenHeight;
 
-			_panel.clipRange = new Vector4(origin_size_x, origin_size_y, resize_z, resize_w);
+			_panel.baseClipRegion = new Vector4(origin_size_x, origin_size_y, resize_z, resize_w);
 		}
 
 		// @cloud

@@ -17,7 +17,7 @@ namespace HC {
             // attach Voice Recognizer
             recognizer = gameObject.AddComponent<VoiceRecognizer>();
 
-            recognizer.callbackSay = OnSaySomething;
+            recognizer.callbackSay = WindowManager.GetWindow<wndMain>().OnSaySomething;
 
             OnVoiceRecordOff();
         }
@@ -27,27 +27,8 @@ namespace HC {
             if (Input.GetKey(KeyCode.Escape))
                 Application.Quit();
         }
-        void OnSaySomething(string txt) {
-            OnVoiceRecordOff();
-            EasyTTSUtil.SpeechAdd(txt);
-            Debug.Log("OnSaySomething : " + txt);
-			WindowManager.GetWindow<wndMain>().objHuman.filterAnimation(txt);
 
-            switch (txt) {
-                case "head" :
-                    Main.instance.SetZoomInOut(ZOOM_ID.HEAD, true);
-                    break;
-                case "thigh":
-                    Main.instance.SetZoomInOut(ZOOM_ID.THIGH, true);
-                    break;
-                case "stomach":
-                    Main.instance.SetZoomInOut(ZOOM_ID.STOMACK, true);
-                    break;
-                default:
-                    Main.instance.SetZoomInOut(ZOOM_ID.NONE, false);
-                    break;
-            }
-        }
+        
 
         void OnVoiceRecordOn() {
 			WindowManager.GetWindow<wndMain>().OnVoiceRecordOn();
@@ -75,11 +56,8 @@ namespace HC {
         }
 
         public void _OnWakeup(string msg) {
-            OnVoiceRecordOff();
-            EasyTTSUtil.SpeechAdd(string.Format("Hello, {0}. Which part do you have pain?", Main.instance.myName));
-            Main.instance.SetZoomInOut(ZOOM_ID.NONE, false);
+			WindowManager.GetWindow<wndMain>().OnWakeup(msg);
         }
-
 
         public void _OnStopLisnening(string msg) {
             OnVoiceRecordOff();

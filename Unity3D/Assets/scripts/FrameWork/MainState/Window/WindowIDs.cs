@@ -16,6 +16,7 @@ namespace HC
         WndPlay,
         WndSetting,
 		WndMenu,						// main menu
+		WndRegister,					// register name or so on data.
         Max
 	}
 

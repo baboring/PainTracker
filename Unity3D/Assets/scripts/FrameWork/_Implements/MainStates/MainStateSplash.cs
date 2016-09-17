@@ -24,8 +24,7 @@ namespace HC
 		override public void OnEnter()
 		{
 			// 씬로드에서 안해주니 여기서 완료시 
-			Action<bool> complete = (success)=>OnLoadComplete();
-			complete(true);
+			SceneLoader.LoadAsyncIdx(SCENE_IDX.SPLASH, (success) => OnLoadComplete());
 		}
 
 		override public void OnLeave()
@@ -41,9 +40,12 @@ namespace HC
 		override public void OnLoadComplete()
 		{
 			IsPrearedState = true;
-
-            // when splash is finished, call next state
-            //SplashScreen.instance.OnFinish = () => GameStateManager.ChangeState(eMainState.Bootup);
+			// when splash is finished, call next state
+			SplashScreen.instance.OnFinish = () => {
+				DestroyObject(SplashScreen.instance.gameObject);
+				//SplashScreen.instance = null;
+				MainStateManager.ChangeState(eMainState.Main);
+			};
 		}
 	}
 

@@ -239,7 +239,7 @@ public class BuildWizard : ScriptableWizard
 		wr.PrettyPrint = true;
 
 		wr.Write(json_encode);
-		wr.TextWriter.Flush();
+		wr.TextWriter.Flush();	
 		wr.TextWriter.Close();
 
 		json_encode.Clear();

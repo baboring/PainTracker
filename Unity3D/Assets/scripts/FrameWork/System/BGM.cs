@@ -256,18 +256,5 @@ namespace HC
 		BGMInfo getBgmInfo(eBGM bgm) {
 			return bgmList[(int)bgm];
 		}
-
-		//-----------------------------------------
-		// BGM 커스텀
-		//-----------------------------------------
-
-		const float AMBIENTL_CHECK_TIME = 2.0f;//2초마다 환경음 재생여부 검사
-		const float AMBIENT1_CHECK_TIME = 20.0f;
-		const float AMBIENT2_CHECK_TIME = 50.0f;
-		float ambientL_timer = 0;
-		float ambient1_timer = 0;
-		float ambient2_timer = 0;
-
-
 	}
 }

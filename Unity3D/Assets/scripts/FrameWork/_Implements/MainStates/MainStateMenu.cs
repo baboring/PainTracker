@@ -41,6 +41,7 @@ namespace HC
             IsPrearedState = true;
             WindowManager.SetActiveWindow(WndID.WndMenu, true);
         }
-    }
+
+	}
 
 }

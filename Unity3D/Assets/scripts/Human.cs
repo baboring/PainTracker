@@ -65,7 +65,8 @@ public class Human : MonoBehaviour {
 	{
 		if (animation.Length > 0)
 			ani.CrossFade(animation, 0.03f);
-		EasyTTSUtil.SpeechAdd(something);
+
+		TTSHelper.SpeechAdd(something);
 	}
 	
 	// Update is called once per frame

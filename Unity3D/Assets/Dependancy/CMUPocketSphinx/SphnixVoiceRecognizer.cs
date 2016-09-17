@@ -22,7 +22,7 @@ namespace CMUPocketSphinx
         IEnumerator Start() {
             yield return Application.RequestUserAuthorization(UserAuthorization.Microphone);
             if (Application.HasUserAuthorization(UserAuthorization.Microphone)) {
-				CMUSphinxAndroid.Init(gameObject.name);
+				CMUSphinxAndroid.Initialize(gameObject.name);
 			}
 			else {
 
@@ -178,7 +178,7 @@ namespace CMUPocketSphinx
             CMUSphinxAndroid._DispatchMessage(FUNC_LOG, msg);
         }
 
-        public void Dispose() {
+        public void Destroy() {
             CMUSphinxAndroid._Dispose();
         }
 

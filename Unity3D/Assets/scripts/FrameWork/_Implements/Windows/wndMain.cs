@@ -38,7 +38,6 @@ namespace HC
         {
             yield return new WaitForFixedUpdate();
 
-			EasyTTSUtil.Initialize(EasyTTSUtil.UnitedStates);
 
 			//nameArray = EasyTTSUtil.GetEngineNameArray();
 			//pkgArray = EasyTTSUtil.GetEnginePkgArray();
@@ -100,6 +99,36 @@ namespace HC
 					break;
 				case "body":
 					SetHelpMessage("Which part do you have pain? ( \"Head\", \"Stomach\", \"Thigh\" )");
+					break;
+			}
+		}
+
+		public void OnWakeup(string msg)
+		{
+			OnVoiceRecordOff();
+			objHuman.OnSay("Which part do you have pain?", "shaking_hands_2");
+			CameraController.instance.SetZoomInOut(ZOOM_ID.NONE, false);
+		}
+
+		public void OnSaySomething(string txt)
+		{
+			OnVoiceRecordOff();
+			TTSHelper.SpeechAdd(txt);
+			Debug.Log("OnSaySomething : " + txt);
+			WindowManager.GetWindow<wndMain>().objHuman.filterAnimation(txt);
+
+			switch (txt) {
+				case "head":
+					CameraController.instance.SetZoomInOut(ZOOM_ID.HEAD, true);
+					break;
+				case "thigh":
+					CameraController.instance.SetZoomInOut(ZOOM_ID.THIGH, true);
+					break;
+				case "stomach":
+					CameraController.instance.SetZoomInOut(ZOOM_ID.STOMACK, true);
+					break;
+				default:
+					CameraController.instance.SetZoomInOut(ZOOM_ID.NONE, false);
 					break;
 			}
 		}

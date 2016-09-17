@@ -20,14 +20,14 @@ namespace CMUPocketSphinx
             return jc.GetStatic<AndroidJavaObject>("currentActivity");
         }
 
-        public static bool Init(string gameObjectName, string mode = "")
+        public static bool Initialize(string gameObjectName, string mode = "")
         {
             bool result = false;
 
             if (Application.platform == RuntimePlatform.Android)
             {
                 sphinxHandle = new AndroidJavaClass("com.narith.pocketsphinx.RecognizerForUnity3d");
-                DebugTools.Assert(null == sphinxHandle, "sphinxHandle is fail to initialize!!");
+                DebugTools.Assert(null != sphinxHandle, "sphinxHandle is failed to initialize!!");
                 result = sphinxHandle.CallStatic<bool>("_Init", gameObjectName);
 				if(result) {
 					DebugTools.Assert(null != sphinxHandle, "sphinxHandle is null");
