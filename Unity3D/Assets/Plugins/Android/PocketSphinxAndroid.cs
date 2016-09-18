@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿//#if (DEV_BUILD || DEBUG_ON)
+#define CONDITIONAL_LOG     // 데브 빌드는 로그 보여줘
+//# endif
+
+using UnityEngine;
 
 namespace CMUPocketSphinx
 {
@@ -14,11 +18,11 @@ namespace CMUPocketSphinx
 
 		private static AndroidJavaClass sphinxHandle;
 
-		private static AndroidJavaObject GetCurrentActivity()
-        {
-            AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-            return jc.GetStatic<AndroidJavaObject>("currentActivity");
-        }
+
+
+
+
+
 
         public static bool Initialize(string gameObjectName, string mode = "")
         {
@@ -31,63 +35,79 @@ namespace CMUPocketSphinx
                 result = sphinxHandle.CallStatic<bool>("_Init", gameObjectName);
 				if(result) {
 					DebugTools.Assert(null != sphinxHandle, "sphinxHandle is null");
-					result = sphinxHandle.CallStatic<bool>("_Create", GetCurrentActivity(), mode);
+					result = sphinxHandle.CallStatic<bool>("_Create", JavaClassHelper.GetCurrentActivity(), mode);
 				}
             }
             return result;
         }
 		
-        public static void _DispatchMessage(string func, string msg)
+        public static void DispatchMessage(string func, string msg)
         {
             DebugTools.Assert(null != sphinxHandle, "sphinxHandle is null");
             sphinxHandle.CallStatic("_DispatchMessage", func, msg);
         }
 
         // Show 
-        public static void _ToastShow(string msg)
+        public static void ToastShow(string msg)
         {
             DebugTools.Assert(null != sphinxHandle, "sphinxHandle is null");
-            GetCurrentActivity().Call("runOnUiThread", new AndroidJavaRunnable(() =>
+			JavaClassHelper.GetCurrentActivity().Call("runOnUiThread", new AndroidJavaRunnable(() =>
             {
                 sphinxHandle.CallStatic("_ToastShow", msg);
             }));
         }
 
-        public static void _Dispose()
+        public static void Dispose()
         {
             DebugTools.Assert(null != sphinxHandle, "sphinxHandle is null");
             sphinxHandle.CallStatic("_Dispose");
         }
 
-        public static void _SwitchSearch(string searchName)
+        public static void SwitchSearch(string searchName)
         {
             DebugTools.Assert(null != sphinxHandle, "sphinxHandle is null");
             sphinxHandle.CallStatic("_SwitchSearch", searchName);
         }
 
-        public static string _CurrentSearchName()
+        public static string CurrentSearchName()
         {
             DebugTools.Assert(null != sphinxHandle, "sphinxHandle is null");
             return sphinxHandle.CallStatic<string>("_CurrentSearchName");
         }
 
-        public static void _StopListening()
+        public static void StopListening()
         {
             DebugTools.Assert(null != sphinxHandle, "sphinxHandle is null");
             sphinxHandle.CallStatic("_StopListening");
         }
 
-        public static bool _StartListening(string searchName)
+        public static bool StartListening(string searchName)
         {
             DebugTools.Assert(null != sphinxHandle, "sphinxHandle is null");
             return sphinxHandle.CallStatic<bool>("_StartListening", searchName);
         }
 
-        public static bool _StartListening(string searchName, int timeout)
+        public static bool StartListening(string searchName, int timeout)
         {
             DebugTools.Assert(null != sphinxHandle, "sphinxHandle is null");
             return sphinxHandle.CallStatic<bool>("_StartListening", searchName, timeout);
         }
     }
+
+	// Listener
+	public interface OnVoiceRecognizeListener {
+		void _OnLog(string msg);
+		void _OnWakeup(string msg);
+		void _OnHypothsisPartialResult(string text);
+		void _OnHypothsisResult(string text);
+		void _DoInBackground(string msg);
+		void _OnPostExecute(string msg);
+		void _OnBeginningOfSpeech(string msg);
+		void _OnEndOfSpeech(string msg);
+		void _OnStopLisnening(string msg);
+		void _OnStartListening(string msg);
+		void _OnTimeout(string msg);
+	}
+
 
 }

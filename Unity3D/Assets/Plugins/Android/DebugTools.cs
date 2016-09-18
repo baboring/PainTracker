@@ -2,12 +2,6 @@
 #define CONDITIONAL_LOG     // 데브 빌드는 로그 보여줘
 #endif
 
-#if (UNITY_EDITOR || UNITY_STANDALONE)
-#define FILE_LOG            // 컴파일 옵션에서 조절 하게 하자.
-#endif
-
-using UnityEngine;
-using System;
 using System.Diagnostics;
 
 public class DebugTools {
@@ -18,6 +12,11 @@ public class DebugTools {
             throw new System.Exception();
         // also used on logging
     }
+
+	[Conditional("CONDITIONAL_LOG")]
+	public static void Warning(string logString) {
+		UnityEngine.Debug.Log(logString);
+	}
 }
 
 

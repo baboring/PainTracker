@@ -1,86 +1,95 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class TTSHelper : MonoBehaviour {
+// Listener
+public interface OnTTSListener {
+	void _OnLog(string msg);
+	void _OnInitialized(string msg);
+	void _OnStart(string text);
+	void _OnDone(string text);
+}
 
-	//public static UIPopupList popupList;
+public class TTSHelper {
 
-	private static AndroidJavaClass ttsHandle;
-	private static AndroidJavaObject GetCurrentActivity()
-	{
-		AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-		return jc.GetStatic<AndroidJavaObject>("currentActivity");
-	}
+	private static AndroidJavaClass javaClassTTS;
 
 	public static bool Initialize(string gameObjectName, string local = UnitedStates, string enginePkg = null)
 	{
 		bool result = false;
 		if (Application.platform == RuntimePlatform.Android) {
-			ttsHandle = new AndroidJavaClass("com.narith.pocketsphinx.SpeechManager");
-			DebugTools.Assert(null != ttsHandle, "ttsHandle is failed to initialize!!");
+			javaClassTTS = new AndroidJavaClass("com.narith.pocketsphinx.SpeechManager");
+			DebugTools.Assert(null != javaClassTTS, "ttsHandle is failed to initialize!!");
 
-			ttsHandle.CallStatic<bool>("_Init", gameObjectName);
+			javaClassTTS.CallStatic<bool>("_Init", gameObjectName);
 			if (enginePkg == null)
-				result = ttsHandle.CallStatic<bool>("_Create", GetCurrentActivity(), local);
+				result = javaClassTTS.CallStatic<bool>("_Create", JavaClassHelper.GetCurrentActivity(), local);
 			else
-				result = ttsHandle.CallStatic<bool>("_Create", GetCurrentActivity(), local, enginePkg);
+				result = javaClassTTS.CallStatic<bool>("_Create", JavaClassHelper.GetCurrentActivity(), local, enginePkg);
 		}
 		return result;
 	}
+
 	public static void OpenTTSSetting()
 	{
 		if (Application.platform == RuntimePlatform.Android)
-			ttsHandle.CallStatic("_OpenTTSSetting");
+			javaClassTTS.CallStatic("_OpenTTSSetting");
 	}
+
 	public static void Stop()
 	{
 		if (Application.platform == RuntimePlatform.Android)
-			ttsHandle.CallStatic("_ShotDown");
+			javaClassTTS.CallStatic("_ShotDown");
 	}
+
 	public static string[] GetEnginePkgArray()
 	{
 		if (Application.platform == RuntimePlatform.Android)
-			return ttsHandle.CallStatic<string[]>("_GetEnginePkgArray");
-		Debug.LogWarning("GetEnginePkgArray is only for android");
+			return javaClassTTS.CallStatic<string[]>("_GetEnginePkgArray");
+		DebugTools.Warning("GetEnginePkgArray is only for android");
 		return null;
 	}
+
 	public static string[] GetEngineNameArray()
 	{
 		if (Application.platform == RuntimePlatform.Android)
-			return ttsHandle.CallStatic<string[]>("_GetEngineNameArray");
+			return javaClassTTS.CallStatic<string[]>("_GetEngineNameArray");
 
-		Debug.LogWarning("GetEngineNameArray is only for android");
+		DebugTools.Warning("GetEngineNameArray is only for android");
 		return null;
 	}
+
 	public static void SetEngineByPackageName(string pkg)
 	{
 		if (Application.platform == RuntimePlatform.Android)
-			ttsHandle.CallStatic("_SetEngineByPackageName",pkg);
+			javaClassTTS.CallStatic("_SetEngineByPackageName",pkg);
 
-		Debug.LogError("SetEngineByPackageName is only for android");
+		DebugTools.Warning("SetEngineByPackageName is only for android");
 	}
+
 	public static string GetDefaultEngineName()
 	{
 		if (Application.platform == RuntimePlatform.Android)
-			return ttsHandle.CallStatic<string>("_GetDefaultEngineName");
+			return javaClassTTS.CallStatic<string>("_GetDefaultEngineName");
 
-		Debug.LogError("GetEngineNameArray is only for android");
+		DebugTools.Warning("GetEngineNameArray is only for android");
 		return null;
 	}
+
 	public static void SpeechAdd(string text)
 	{
 		if (string.IsNullOrEmpty(text))
 			return;
 		if (Application.platform == RuntimePlatform.Android)
-			ttsHandle.CallStatic("_SpeechAdd",text);
+			javaClassTTS.CallStatic("_SpeechAdd",text);
 	}
+
 	public static void SpeechFlush(string text)
 	{
 		if (string.IsNullOrEmpty(text))
 			return;
 		if (Application.platform == RuntimePlatform.Android)
-			ttsHandle.CallStatic("_SpeechFrush",text);
+			javaClassTTS.CallStatic("_SpeechFrush",text);
 	}
+
 
 	public const string SaudiArabia = "ar-SA";
 	public const string SouthAfrica = "en-ZA";
