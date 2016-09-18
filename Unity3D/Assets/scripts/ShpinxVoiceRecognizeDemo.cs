@@ -8,12 +8,6 @@ namespace HC {
         VoiceRecognizer recognizer;
         // Use this for initialization
         void Start() {
-            if (SystemConfig.IsDebugOn) {
-                var console = gameObject.AddComponent<uLinkConsoleGUI>();
-                console.showByKey = KeyCode.Menu;
-                console.SetVisible(false);
-            }
-
             // attach Voice Recognizer
             recognizer = gameObject.AddComponent<VoiceRecognizer>();
 
@@ -21,14 +15,6 @@ namespace HC {
 
             OnVoiceRecordOff();
         }
-
-        // Update is called once per frame
-        void Update() {
-            if (Input.GetKey(KeyCode.Escape))
-                Application.Quit();
-        }
-
-        
 
         void OnVoiceRecordOn() {
 			WindowManager.GetWindow<wndMain>().OnVoiceRecordOn();
@@ -44,15 +30,15 @@ namespace HC {
             OnVoiceRecordOn();
         }
 
-
         public void _OnHypothsisPartialResult(string text) {
 
 			WindowManager.GetWindow<wndMain>().SetHelpMessage("");
 			WindowManager.GetWindow<wndMain>().SetSpeechText(text);
         }
+
         public void _OnHypothsisResult(string text) {
 			WindowManager.GetWindow<wndMain>().SetSpeechText("");
-            CMUSphinxAndroid._ToastShow(text);
+            CMUSphinxAndroid.ToastShow(text);
         }
 
         public void _OnWakeup(string msg) {

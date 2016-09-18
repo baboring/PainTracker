@@ -6,16 +6,16 @@ using System.Collections.Generic;
 
 namespace CMUPocketSphinx
 {
-    public class VoiceRecognizer : MonoBehaviour
-    {
-        private const string FUNC_LOG = "_OnLog";
 
+	public class VoiceRecognizer : MonoBehaviour, OnVoiceRecognizeListener {
+        
         private string _currentGUID;
 
-        // initialization
-        void Awake()
+		public static OnVoiceRecognizeListener listener;
+		// initialization
+		void Awake()
         {
-            _currentGUID = System.Guid.NewGuid().ToString();
+			_currentGUID = System.Guid.NewGuid().ToString();
             gameObject.name = gameObject.name + _currentGUID;
         }
 
@@ -27,7 +27,6 @@ namespace CMUPocketSphinx
 			else {
 
             }
-            InvokeRepeating("decreaseTimeRemaining", 1, 0.1f);
         }
 
         public void _OnLog(string msg)
@@ -35,55 +34,14 @@ namespace CMUPocketSphinx
             Debug.Log(msg);
         }
 
-        /// <summary>
-        /// Timer 
-        /// </summary>
-        void decreaseTimeRemaining() {
-          foreach (var t in lstIimer)
-                t.Elapsed(100);
-            lstIimer.RemoveAll(item => item.IsTimeOver);
-        }
-
-        class TIMER {
-            public int id;
-            public Action callback;
-            public int remainTime;
-
-            public bool IsTimeOver {get{return (remainTime <= 0);}}       
-            public bool Elapsed(int time) {
-                remainTime -= time;
-                //Debug.Log(string.Format("time {0} {1}",id,remainTime));
-                if (IsTimeOver) {
-                    callback();
-                    callback = null;
-                    return true;
-                }
-                return false;
-            }
-        }
-        List<TIMER> lstIimer = new List<TIMER>();
-
-        static int time_uid = 0;
-        void SetTimer(int id, int ms, Action listener) {
-            lstIimer.Add(new TIMER() {
-                id = time_uid++,
-                remainTime = ms,
-                callback = listener
-            });
-        }
-  
 
 
         public Action<string> callbackSay;
         public void _OnWakeup(string msg) {
-            //SphinxPluginAndroid._StopListening();
-            SetTimer(0, 4000, () => {
-                CMUSphinxAndroid._StartListening(CMUSphinxAndroid.BODY_SEARCH, 10000);
-            });
         }
 
         public void _OnHypothsisPartialResult(string text) {
-            switch (CMUSphinxAndroid._CurrentSearchName()) {
+            switch (CMUSphinxAndroid.CurrentSearchName()) {
                 case CMUSphinxAndroid.KWS_SEARCH:
                     //if (text.Equals(SphinxPluginAndroid.KWS_PHRASE))
                     //SphinxPluginAndroid._SwitchSearch(SphinxPluginAndroid.MENU_SEARCH);
@@ -92,13 +50,13 @@ namespace CMUPocketSphinx
                 case CMUSphinxAndroid.MENU_SEARCH:
                     
                     if (text.Equals(CMUSphinxAndroid.BODY_SEARCH))
-                        CMUSphinxAndroid._SwitchSearch(CMUSphinxAndroid.BODY_SEARCH);
+                        CMUSphinxAndroid.SwitchSearch(CMUSphinxAndroid.BODY_SEARCH);
                     else if (text.Equals(CMUSphinxAndroid.DIGITS_SEARCH))
-                        CMUSphinxAndroid._SwitchSearch(CMUSphinxAndroid.DIGITS_SEARCH);
+                        CMUSphinxAndroid.SwitchSearch(CMUSphinxAndroid.DIGITS_SEARCH);
                     else if (text.Equals(CMUSphinxAndroid.FORECAST_SEARCH))
-                        CMUSphinxAndroid._SwitchSearch(CMUSphinxAndroid.FORECAST_SEARCH);
+                        CMUSphinxAndroid.SwitchSearch(CMUSphinxAndroid.FORECAST_SEARCH);
                     else if (text.Equals(CMUSphinxAndroid.GREET_SEARCH))
-                        CMUSphinxAndroid._SwitchSearch(CMUSphinxAndroid.GREET_SEARCH);
+                        CMUSphinxAndroid.SwitchSearch(CMUSphinxAndroid.GREET_SEARCH);
                     //switch(text) {
                     //    case SphinxPluginAndroid.BODY_SEARCH:
                     //    case SphinxPluginAndroid.DIGITS_SEARCH:
@@ -111,7 +69,7 @@ namespace CMUPocketSphinx
 
                     break;
                 case CMUSphinxAndroid.BODY_SEARCH:
-                    CMUSphinxAndroid._StopListening();
+                    CMUSphinxAndroid.StopListening();
                     break;
                 default:
                     break;
@@ -119,27 +77,27 @@ namespace CMUPocketSphinx
         }
 
         void AnswerAndRestart(string text) {
-            CMUSphinxAndroid._StopListening();
+            CMUSphinxAndroid.StopListening();
             if (null != callbackSay)
                 callbackSay(text);
 
-            SetTimer(0, 1200, () => {
-                CMUSphinxAndroid._StartListening(CMUSphinxAndroid.KWS_SEARCH);
-                //if (text.Equals(SphinxPluginAndroid.BODY_SEARCH))
-                //    SphinxPluginAndroid._StartListening(text, 10000);
-                //else if (text.Equals(SphinxPluginAndroid.DIGITS_SEARCH))
-                //    SphinxPluginAndroid._StartListening(text, 10000);
-                //else if (text.Equals(SphinxPluginAndroid.PHONE_SEARCH))
-                //    SphinxPluginAndroid._StartListening(text, 10000);
-                //else if (text.Equals(SphinxPluginAndroid.FORECAST_SEARCH))
-                //    SphinxPluginAndroid._StartListening(text, 10000);
-            });
+            //SetTimer(0, 1200, () => {
+            //    CMUSphinxAndroid.StartListening(CMUSphinxAndroid.KWS_SEARCH);
+            //    //if (text.Equals(SphinxPluginAndroid.BODY_SEARCH))
+            //    //    SphinxPluginAndroid._StartListening(text, 10000);
+            //    //else if (text.Equals(SphinxPluginAndroid.DIGITS_SEARCH))
+            //    //    SphinxPluginAndroid._StartListening(text, 10000);
+            //    //else if (text.Equals(SphinxPluginAndroid.PHONE_SEARCH))
+            //    //    SphinxPluginAndroid._StartListening(text, 10000);
+            //    //else if (text.Equals(SphinxPluginAndroid.FORECAST_SEARCH))
+            //    //    SphinxPluginAndroid._StartListening(text, 10000);
+            //});
         }
 
         public void _OnHypothsisResult(string text) {
             Debug.Log("_OnHypothsisResult::" + text);
 
-            switch (CMUSphinxAndroid._CurrentSearchName()) {
+            switch (CMUSphinxAndroid.CurrentSearchName()) {
                 case CMUSphinxAndroid.BODY_SEARCH:
                     //SphinxPluginAndroid._SwitchSearch("_");
                     AnswerAndRestart(text);
@@ -171,15 +129,11 @@ namespace CMUPocketSphinx
 
 
         public void _OnTimeout(string msg) {
-            CMUSphinxAndroid._SwitchSearch(CMUSphinxAndroid.KWS_SEARCH);
-        }
-        public void Notice(string msg)
-        {
-            CMUSphinxAndroid._DispatchMessage(FUNC_LOG, msg);
+            CMUSphinxAndroid.SwitchSearch(CMUSphinxAndroid.KWS_SEARCH);
         }
 
         public void Destroy() {
-            CMUSphinxAndroid._Dispose();
+            CMUSphinxAndroid.Dispose();
         }
 
     }

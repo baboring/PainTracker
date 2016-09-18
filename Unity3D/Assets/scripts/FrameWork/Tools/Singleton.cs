@@ -52,13 +52,11 @@ public class SingletonMB<T> : MonoBehaviour where T : MonoBehaviour
 			return _instance;
 		}
 	}
-	protected virtual void Awake()
-	{
+	protected virtual void Awake()	{
 		Debug.Log("Awake singleton : " + typeof(T));
 	}
 
-    public virtual void Initial()
-	{
+	public virtual void Initial() {
 
 	}
 

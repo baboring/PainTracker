@@ -7,8 +7,8 @@ namespace HC
     {
         public GameObject obnBtnSubmit;
 
-        // Use this for initialization
-        protected override void Awake()
+		// Use this for initialization
+		protected override void Awake()
         {
             eWindowID = WndID.WndRegister;
             eWindowType = WndType.Popup;

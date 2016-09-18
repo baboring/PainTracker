@@ -66,11 +66,7 @@ public class Human : MonoBehaviour {
 		if (animation.Length > 0)
 			ani.CrossFade(animation, 0.03f);
 
-		TTSHelper.SpeechAdd(something);
+		TTSHelper.SpeechFlush(something);
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }

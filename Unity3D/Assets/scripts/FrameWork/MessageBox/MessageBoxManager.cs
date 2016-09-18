@@ -93,12 +93,24 @@ namespace HC
             {
                 objRoot = this.gameObject;
 
-                UIRoot uiRoot = objRoot.AddComponent<UIRoot>();
-                uiRoot.scalingStyle = UIRoot.Scaling.ConstrainedOnMobiles;
-            }
-            //objRoot = GameObject.Find("Root");
-            if (prefabMessageBox == null)
-                prefabMessageBox = Resources.Load("UI/Prefab/MessageBox") as GameObject;
+				//var uiRoot = gameObject.AddComponent<UIRoot>();
+				//uiRoot.scalingStyle = UIRoot.Scaling.ConstrainedOnMobiles;
+				//uiRoot.manualWidth = 640;
+				//uiRoot.manualHeight = 1136;
+				//gameObject.layer = LayerMask.NameToLayer("UI");
+				//gameObject.AddComponent<UIPanel>().depth = 3;
+
+				// attach other ui
+				gameObject.layer = LayerMask.NameToLayer("UI");
+				gameObject.transform.parent = Main.instance.transform;
+				gameObject.transform.localScale = new Vector3(1, 1, 1);
+				gameObject.AddComponent<UIPanel>().depth = 2;
+
+			}
+			//objRoot = GameObject.Find("Root");
+			if (prefabMessageBox == null)
+                prefabMessageBox = Resources.Load("Prefab/MessageBox") as GameObject;
+			Logger.Assert(prefabMessageBox != null, "Load Fails : Prefab/MessageBox");
         }
         //----------------------------------------------------------------------------------------
         public MessageBoxWindow GetTop()
@@ -181,6 +193,14 @@ namespace HC
             return instance._Remove(msgBox);
         }
 
+		public static bool IsExist(string title) {
+			return (null != instance._Find(title));
+		}
+
+		MessageBoxWindow _Find(string title) {
+			return StackMessageBoxs.Find(va => va.objectTitle.text == title);
+		}
+
         // 닫기 처리
         bool _Remove(MessageBoxWindow msgBox)
         {
@@ -212,48 +232,63 @@ namespace HC
             return instance._Show(msgInfo.szTitle, msgInfo.szDescription, msgInfo.eMsgBoxType);
         }
         // CUSTOM 버튼 메시지박스 생성 
-        public static MessageBoxWindow Show(CustomMessageBoxInfo msgInfo)
-        {
-            MessageBoxManager.Prepare();
-            return instance._Show(msgInfo);
-        }
+        public static MessageBoxWindow Show(CustomMessageBoxInfo msgInfo) {
+			MessageBoxManager.Prepare();
+			return instance._Show(msgInfo);
+		}
 
-        ///////////////////////////////////////////////////////////////////////////////////////////
-        MessageBoxWindow _Show(string strTitle, string strDesc, eMessageBox msgBoxType)
+		///////////////////////////////////////////////////////////////////////////////////////////
+		MessageBoxWindow _Show(string strTitle, string strDesc, eMessageBox msgBoxType)
         {
-            GameObject messageBoxObject = null;
-
             Logger.DebugFormat(ColorType.cyan, "ShowMsg : {0}/{1}", strTitle, strDesc);
+			Logger.Assert(null != prefabMessageBox, "prefabMessageBox is null");
+			if (null == prefabMessageBox)
+				return null;
 
-            messageBoxObject = GameObject.Instantiate(prefabMessageBox) as GameObject;
+			GameObject messageBoxObject = null;
+			messageBoxObject = GameObject.Instantiate(prefabMessageBox) as GameObject;
 
-            // group root 
-            if (messageBoxObject == null)
+			// group root 
+			if (messageBoxObject == null)
                 return null;
-            else {
-                messageBoxObject.transform.parent = objRoot.transform;
-                messageBoxObject.transform.localScale = new Vector3(1, 1, 1);
-                messageBoxObject.transform.localPosition = new Vector3(0, 0, (SystemConfig.DEPTH_BASE_MESSAGE_BOX + (float)(StackMessageBoxs.Count) * -5.0f));
-            }
 
-            MessageBoxWindow dlgMessageBox = messageBoxObject.GetComponent<MessageBoxWindow>();
+			messageBoxObject.transform.parent = objRoot.transform;
+            messageBoxObject.transform.localScale = new Vector3(1, 1, 1);
+            messageBoxObject.transform.localPosition = new Vector3(0, 0, (SystemConfig.DEPTH_BASE_MESSAGE_BOX + (float)(StackMessageBoxs.Count) * -5.0f));
 
-            if (dlgMessageBox == null)
-            {
+			// find highest depth
+			int nHighest = 0;
+			foreach (Transform child in objRoot.transform) {
+				if (child == null)
+					continue;
+				var msgBox = child.GetComponent<UIWidget>();
+				if(null != msgBox && nHighest < msgBox.depth)
+					nHighest = msgBox.depth;
+			};
+
+			// change all depth...
+			var _lstChild = new List<UIWidget>();
+			Util.FetchChildWigets(_lstChild, messageBoxObject);
+			foreach (var widget in _lstChild)
+				widget.depth += (nHighest + 10);
+
+			MessageBoxWindow dlgMessageBox = messageBoxObject.GetComponent<MessageBoxWindow>();
+			Logger.Assert(null != dlgMessageBox, "MessageBoxWindow is null");
+
+			if (dlgMessageBox == null) {
                 GameObject.DestroyObject(messageBoxObject);
                 return null;
             }
 
-            // Stack에 추가
-            StackMessageBoxs.Add(dlgMessageBox);
+			// Stack에 추가
+			StackMessageBoxs.Add(dlgMessageBox);
 
-            //-------------------------------------------------------------------
-            // 타이틀 설정
-            if (dlgMessageBox.objectTitle != null)
-            {
+			//-------------------------------------------------------------------
+			// 타이틀 설정
+			if (dlgMessageBox.objectTitle != null) {
                 UILabel labelTitle = dlgMessageBox.objectTitle.GetComponent<UILabel>();
 
-                if (labelTitle != null)
+				if (labelTitle != null)
                 {
                     if (string.IsNullOrEmpty(strTitle))
                     {
@@ -272,17 +307,16 @@ namespace HC
                 messageBoxObject.name = "MessageBox (" + StackMessageBoxs.Count + ")";
             }
 
-            // 내용 설정
-            if (dlgMessageBox.objectDesc != null)
-            {
+			// 내용 설정
+			if (dlgMessageBox.objectDesc != null) {
                 UILabel labelDesc = dlgMessageBox.objectDesc.GetComponent<UILabel>();
 
                 if (labelDesc != null)
                     labelDesc.text = strDesc;
             }
 
-            // 스프라이트 설정
-            switch (msgBoxType)
+			// 스프라이트 설정
+			switch (msgBoxType)
             {
                 case eMessageBox.MB_YESNO:
                 case eMessageBox.MB_CUSTOM_3BTN:        //ID_YES , ID_NO , ID_CUSTOM_1
@@ -312,9 +346,9 @@ namespace HC
                     break;
             }
 
-            messageBoxObject.SetActive(true);
+			messageBoxObject.SetActive(true);
 
-            return dlgMessageBox;
+			return dlgMessageBox;
         }
 
         MessageBoxWindow _Show(CustomMessageBoxInfo customBoxInfo)

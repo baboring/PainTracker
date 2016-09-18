@@ -3,6 +3,13 @@ using System.Collections;
 
 public class LoadingScreen : ManualSingletonMB<LoadingScreen> {
 
+	static GameObject objLoadingScreen;
+	public static void Load() {
+		if(null == objLoadingScreen) {
+			var prefabObj = Resources.Load("Prefab/ScreenLoading") as GameObject;
+			objLoadingScreen = GameObject.Instantiate(prefabObj) as GameObject;
+		}
+	}
 	void Awake() {
 		instance = this;
 		DontDestroyOnLoad(this);
@@ -16,7 +23,7 @@ public class LoadingScreen : ManualSingletonMB<LoadingScreen> {
 		gameObject.SetActive(bFlag);
 	}
 
-	public void ShowLoadingProress(float percent) {
+	public void SetProress(float percent) {
 
 	}
 }

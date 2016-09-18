@@ -59,61 +59,35 @@ namespace HC
 			base.Initial();
 			Logger.InfoFormat("GSM Initialization !!");
 		}
-		void OnApplicationQuit()
-		{
-			TTSHelper.Stop();
-		}
 
 		protected override void Awake()
 		{
 			base.Awake();
+			Logger.InfoFormat("Initialization !!");
+			// table resource create
+			R.Create();
+
 			// windowManager 초기화를 여기서 먼저 해주자.
+			MessageBoxManager.instance.Initial();
 			WindowManager.CreateInstance();
+
+			SceneLoader.CreateInstance();
+			//PushManager.CreateInstance();
+
+			// 개인 정보 생성
+			PlayerSaveInfo.CreateInstance();
+			PlayerSaveInfo.instance.Load();
+
 
 			AddGameState(eMainState.None, this.gameObject.AddComponent<MainStateNone>());
 			AddGameState(eMainState.Splash, this.gameObject.AddComponent<MainStateSplash>());
 			AddGameState(eMainState.Bootup, this.gameObject.AddComponent<MainStateBootup>());
             AddGameState(eMainState.Main, this.gameObject.AddComponent<MainStateMain>());
 			AddGameState(eMainState.Menu, this.gameObject.AddComponent<MainStateMenu>());
-
-
-			Initialization();
 		}
 
 		private void Initialization()
 		{
-            // table resource create
-            R.Create();
-
-			SceneLoader.CreateInstance();
-			Logger.InfoFormat("GSM Awake !!");
-
-			//GlobalData.CreateInstance();
-
-			//PushManager.CreateInstance();
-
-
-			//EasyTTSUtil.Initialize(EasyTTSUtil.UnitedStates);
-			//nameArray = EasyTTSUtil.GetEngineNameArray();
-			//pkgArray = EasyTTSUtil.GetEnginePkgArray();
-
-			//if (null != pkgArray)
-			//	foreach (var item in pkgArray) {
-			//		popupList.AddItem(item);
-			//	}
-
-
-			// 개인 정보 생성
-			PlayerSaveInfo.CreateInstance();
-
-// 			// 봇 예외 처리
-// 			if (null != BVT_Bot.BotSystem.Instance && BVT_Bot.BotSystem.IsEnable) {
-// 				Logger.Log("TurnOff PlayerSaveInfo");
-// 				PlayerSaveInfo.Instance.IsNotUseProfile = true;
-// 			}
-
-			PlayerSaveInfo.instance.Load();
-
 		}
 
 		private void Reset()

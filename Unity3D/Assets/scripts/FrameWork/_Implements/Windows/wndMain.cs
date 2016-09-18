@@ -113,7 +113,7 @@ namespace HC
 		public void OnSaySomething(string txt)
 		{
 			OnVoiceRecordOff();
-			TTSHelper.SpeechAdd(txt);
+			TTSHelper.SpeechFlush(txt);
 			Debug.Log("OnSaySomething : " + txt);
 			WindowManager.GetWindow<wndMain>().objHuman.filterAnimation(txt);
 

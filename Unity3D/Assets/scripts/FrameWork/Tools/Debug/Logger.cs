@@ -202,16 +202,16 @@ namespace HC {
             UnityEngine.Debug.LogError(string.Format(szFormat, p));
         }
 
-        /*
-                [Conditional("CONDITIONAL_LOG")]
-                public static void LogPacket(PacketID packetID, string szFormat = null, params object[] p)
-                {
-                    if (null != szFormat)
-                        WriteFileLog(string.Format("{0} - ",packetID) + string.Format(szFormat, p),LogLevel.PACKET);
-                    else
-                        WriteFileLog(string.Format("{0} - ", packetID), LogLevel.PACKET);
-                }
-        */
+/*
+        [Conditional("CONDITIONAL_LOG")]
+        public static void LogPacket(PacketID packetID, string szFormat = null, params object[] p)
+        {
+            if (null != szFormat)
+                WriteFileLog(string.Format("{0} - ",packetID) + string.Format(szFormat, p),LogLevel.PACKET);
+            else
+                WriteFileLog(string.Format("{0} - ", packetID), LogLevel.PACKET);
+        }
+*/
         [Conditional("CONDITIONAL_LOG")]
         public static void LogToFile(string szFormat, params object[] p) {
             WriteFileLog(string.Format(szFormat, p), LogLevel.INFO);
@@ -221,30 +221,30 @@ namespace HC {
             // 조건이 참 또는 어썰트 사용하지 않을때... 봇용
             if (condition || !isEnableAssert)
                 return;
-            else {
-                if (szFormat == null)
-                    Error(StackTracer());
-                else
-                    Error(string.Format(szFormat, p) + "/n" + StackTracer());
-            }
+
+			if (szFormat == null)
+                Error(StackTracer());
+            else
+                Error(string.Format(szFormat, p) + "/n" + StackTracer());
         }
 
-#if ( UNITY_EDITOR || UNITY_4_0 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7 || UNITY_4_8 || UNITY_4_9 )
+		/// <summary>
+		/// 
+		/// </summary>
         static Func<string> StackTracer = delegate() {
-            // @bluegol 20140205 Unity는 \r만 찍네. 미쳤어;;;
-            // IndexOf( '\n' ) doesn't work but IndexOf("\n" ) does...
-            var all = UnityEngine.StackTraceUtility.ExtractStackTrace();
+#if (UNITY_EDITOR || UNITY_4_0 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7 || UNITY_4_8 || UNITY_4_9)
+			// @bluegol 20140205 Unity는 \r만 찍네. 미쳤어;;;
+			// IndexOf( '\n' ) doesn't work but IndexOf("\n" ) does...
+			var all = UnityEngine.StackTraceUtility.ExtractStackTrace();
             var all2 = all.Substring(all.IndexOf("\n") + 1);
             return all2.Substring(all2.IndexOf("\n") + 1);
-        };
 #else
-		    static public Func<string> StackTracer = delegate() {
-			    var fr = new StackFrame( 2, true );
-			    return ( new StackTrace( fr ) ).ToString();
-		    };
+			var fr = new StackFrame( 2, true );
+			return ( new StackTrace( fr ) ).ToString();
 #endif
+		};
 
-        static System.Text.StringBuilder sb_ = new System.Text.StringBuilder();
+		static System.Text.StringBuilder sb_ = new System.Text.StringBuilder();
 
         static string GetErrorString(string stack_trace, string more_info, params object[] p) {
             if (!string.IsNullOrEmpty(more_info))

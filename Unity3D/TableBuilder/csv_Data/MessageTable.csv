@@ -1,0 +1,12 @@
+SystemMsg,2,9
+id,StrValue
+!enum:eKey,!string
+Yes,Yes
+No,No
+Confirmation,Ok
+TitleNotice,Notice
+TitleWarning,Warning !!
+MsgNotRegisterPopup,팝업으로 등록된 윈도우가 아닙니다
+CantUseDuplicatingPopup,팝업 윈도우는 중복해서 사용 할 수 없습니다.
+FoundIllegalApp,불법 앱 발견 앱 강제종료
+FoundIllegalSignature,불법 APK 검출

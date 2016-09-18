@@ -29,7 +29,8 @@ namespace HC
 
 			// extra button
 			ButtonHandler.CreateHandle(0, objBtnExtra, true, true, (btn) => {
-				TTSHelper.OpenTTSSetting();
+				//TTSHelper.OpenTTSSetting();
+				MessageBoxManager.Show("Hello", "May I help you");
 			});
 
 			// Help button

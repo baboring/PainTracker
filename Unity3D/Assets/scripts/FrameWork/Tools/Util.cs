@@ -156,7 +156,19 @@ namespace HC
 					continue;
 				FetchChildWigets(lstChild, child.gameObject);
 			};
+		}
 
+		static public void FetchChildWigets(List<UIWidget> lstChild, GameObject _object) {
+			Logger.Assert(null != lstChild, "lstChild is null");
+			UIWidget uiWidget = _object.GetComponent<UIWidget>();
+			if (null != uiWidget)
+				lstChild.Add(uiWidget);
+
+			foreach (Transform child in _object.transform) {
+				if (child == null)
+					continue;
+				FetchChildWigets(lstChild, child.gameObject);
+			};
 		}
 
 		// 인터넷에서 긁어왔음. cpfnqla, 두 선분이 교차하는지 검사, 교차점은 result로 

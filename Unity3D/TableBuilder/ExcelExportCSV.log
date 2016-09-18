@@ -1,0 +1,27 @@
+------------------ Log start ------------------
+2016-09-04 21:10:22 INFO - Read From Excel D:\Workspace\Project.Sharper\trunk\Client\TableBuilder\xlsx_Data/SecureInfo.xlsx
+2016-09-04 21:10:23 INFO - Total Sheets 2
+2016-09-04 21:10:23 INFO - Read Sheet 'Secure'
+2016-09-04 21:10:23 INFO - Read Sheet 'illegalApp'
+2016-09-04 21:10:24 INFO - Write CSV : SecureInfo
+2016-09-04 21:10:24 INFO - Write File : ./csv_Data/SecureInfo.csv
+2016-09-04 21:10:24 INFO - Write File : ../Assets/Resources/csv_Data/SecureInfo.csv
+2016-09-04 21:10:24 INFO - Read From Excel D:\Workspace\Project.Sharper\trunk\Client\TableBuilder\xlsx_Data/MessageTable.xlsx
+2016-09-04 21:10:25 INFO - Total Sheets 1
+2016-09-04 21:10:25 INFO - Read Sheet 'SystemMsg'
+2016-09-04 21:10:25 INFO - Write CSV : MessageTable
+2016-09-04 21:10:25 INFO - Write File : ./csv_Data/MessageTable.csv
+2016-09-04 21:10:25 INFO - Write File : ../Assets/Resources/csv_Data/MessageTable.csv
+2016-09-04 21:10:25 INFO - Read From Excel D:\Workspace\Project.Sharper\trunk\Client\TableBuilder\xlsx_Data/TestData_Builder.xlsx
+2016-09-04 21:10:26 INFO - Total Sheets 2
+2016-09-04 21:10:26 INFO - Read Sheet 'DefaultValue'
+2016-09-04 21:10:27 INFO - Read Sheet 'TestEnumTable'
+2016-09-04 21:10:27 INFO - Write CSV : TestData_Builder
+2016-09-04 21:10:27 INFO - Write File : ./csv_Data/TestData_Builder.csv
+2016-09-04 21:10:27 INFO - Write File : ../Assets/Resources/csv_Data/TestData_Builder.csv
+2016-09-04 21:10:27 INFO - Read From Excel D:\Workspace\Project.Sharper\trunk\Client\TableBuilder\xlsx_Data/TestData_Use.xlsx
+2016-09-04 21:10:28 INFO - Total Sheets 1
+2016-09-04 21:10:28 INFO - Read Sheet 'MessageBox'
+2016-09-04 21:10:28 INFO - Write CSV : TestData_Use
+2016-09-04 21:10:28 INFO - Write File : ./csv_Data/TestData_Use.csv
+2016-09-04 21:10:28 INFO - Write File : ../Assets/Resources/csv_Data/TestData_Use.csv

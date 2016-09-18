@@ -25,8 +25,6 @@ namespace HC {
         public Transform posCameraStomach;
 
 
-        public UIInput uiInput;
-
         // Use this for initialization
         void Awake() {
 			instance = this;
@@ -55,10 +53,10 @@ namespace HC {
             //    SetZoomInOut((ZOOM_ID)(id % 3), true);
 
             //string saySomething = string.Format("My name is %s.", uiInput.value);
-            if (uiInput.value.Length > 0)
-                myName = uiInput.value;
-			WindowManager.GetWindow<wndMain>().objHuman.OnSay("My name is " + myName, "shaking_hands_2");
-            SetZoomInOut(ZOOM_ID.NONE, false);
+   //         if (uiInput.value.Length > 0)
+   //             myName = uiInput.value;
+			//WindowManager.GetWindow<wndMain>().objHuman.OnSay("My name is " + myName, "shaking_hands_2");
+   //         SetZoomInOut(ZOOM_ID.NONE, false);
         }
         // Update is called once per frame
         void Update() {

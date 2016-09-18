@@ -6,34 +6,34 @@ using System.Collections.Generic;
 
 namespace CMUPocketSphinx
 {
-    public class TextToSpeech : MonoBehaviour
-    {
-        private const string FUNC_LOG = "_OnLog";
+    public class TextToSpeech : MonoBehaviour, OnTTSListener {
 
-        private string _currentGUID;
+		private string _currentGUID;
 
-        // initialization
-        void Awake()
-        {
+		public static OnVoiceRecognizeListener listener;
+
+		// initialization
+		void Awake() {
             _currentGUID = System.Guid.NewGuid().ToString();
             gameObject.name = gameObject.name + _currentGUID;
-        }
-
-        void Start() {
 			TTSHelper.Initialize(gameObject.name, TTSHelper.UnitedKingdom);
 		}
 
-		public void _OnLog(string msg)
-        {
+		void Start() {
+		}
+
+		public void _OnLog(string msg) {
             Debug.Log(msg);
         }
 
 		public void _OnInitialized(string msg) {
 			Debug.Log(msg);
 		}
+
 		public void _OnStart(string msg) {
 			Debug.Log(msg);
 		}
+
 		public void _OnDone(string msg) {
 			Debug.Log(msg);
 		}

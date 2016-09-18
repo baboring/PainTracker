@@ -16,17 +16,17 @@ namespace HC
 		public bool IsActived { get; private set; }			// 창이 Start루틴을 실행 할때 비로소 Active 된거라고 봐야 한다.
 
 		public GameObject objectWindow = null;              // 전체 윈도우
-		public GameObject objectTitle = null;               // 제목 오브젝트
-		public GameObject objectDesc = null;                // 설명 오브젝트
-		public ClickEventDelegator objectCancelButton = null;        // Cancel 버튼
-		public GameObject objectCancelLabel = null;		    // Cancel 버튼 문자열 스프라이트
-		public ClickEventDelegator objectOkButton = null;            // OK 버튼
-		public GameObject objectOkLabel = null;			// OK 버튼 문자열 스프라이트
-		public GameObject sprite_popupWindow = null;		// 윈도우 sprite가 붙은 오브젝트
-		public GameObject sprite_titleBar = null;			// 타이틀바 sprite 가 붙은 오브젝트
+		public UISprite sprite_popupWindow = null;      // 윈도우 sprite가 붙은 오브젝트
+		public UISprite sprite_titleBar = null;         // 타이틀바 sprite 가 붙은 오브젝트
+		public UILabel objectTitle = null;				   // 제목 오브젝트
+		public UILabel objectDesc = null;					 // 설명 오브젝트
+		public GameObject objectCancelButton = null;        // Cancel 버튼
+		public UILabel objectCancelLabel = null;		    // Cancel 버튼 문자열 스프라이트
+		public GameObject objectOkButton = null;            // OK 버튼
+		public UILabel objectOkLabel = null;				// OK 버튼 문자열 스프라이트
 
-		public ClickEventDelegator objectCustomButton = null;            // custom 버튼
-		public GameObject objectCustomLabel = null;			// custom 버튼 문자열 스프라이트
+		public GameObject objectCustomButton = null;        // custom 버튼
+		public UILabel objectCustomLabel = null;			// custom 버튼 문자열 스프라이트
 
 		//Animation animationPlay = null;
 
@@ -249,49 +249,53 @@ namespace HC
 
 		void ResizeWindowBox()
 		{
-// 			const int DEFAULT_LINE = 3;  //메세지박스의 기본 크기가 3줄에 맞춰져 있다.
-// 			UILabel msg = objectDesc.GetComponent<UILabel>();
-// 			if (null == msg || null == msg.font)
-// 				return;
-// 			Vector2 emptyLineSize = msg.font.CalculatePrintedSize("", msg.supportEncoding, msg.symbolStyle);
-// 			Vector2 textSize = msg.font.CalculatePrintedSize(msg.processedText, msg.supportEncoding, msg.symbolStyle);
-// 			int lineCnt = (int)(textSize.y / emptyLineSize.y);
-// 			float charHeight = msg.transform.localScale.y;
-// 
-// 			if (DEFAULT_LINE < lineCnt) {
-// 				int addedLineCnt = lineCnt - DEFAULT_LINE;
-// 				float moveDelta = addedLineCnt * (charHeight / 2);
-// 
-// 				//팝업의 윈도우BG 크기조절
-// 				sprite_popupWindow.transform.localScale = new Vector3(
-// 					sprite_popupWindow.transform.localScale.x,
-// 					sprite_popupWindow.transform.localScale.y + addedLineCnt * charHeight,
-// 					sprite_popupWindow.transform.localScale.z);
-// 
-// 				//타이틀바 위치 조절(위로)
-// 				sprite_titleBar.transform.localPosition = new Vector3(
-// 					sprite_titleBar.transform.localPosition.x,
-// 					sprite_titleBar.transform.localPosition.y + moveDelta,
-// 					sprite_titleBar.transform.localPosition.z);
-// 
-// 				//타이틀 텍스트 위치 조절(위로)
-// 				objectTitle.transform.localPosition = new Vector3(
-// 					objectTitle.transform.localPosition.x,
-// 					objectTitle.transform.localPosition.y + moveDelta,
-// 					objectTitle.transform.localPosition.z);
-// 
-// 				//취소버튼 위치 조절(아래로)
-// 				objectCancelButton.transform.localPosition = new Vector3(
-// 					objectCancelButton.transform.localPosition.x,
-// 					objectCancelButton.transform.localPosition.y - moveDelta,
-// 					objectCancelButton.transform.localPosition.z);
-// 
-// 				//확인 버튼 위치 조절(아래로)
-// 				objectOkButton.transform.localPosition = new Vector3(
-// 					objectOkButton.transform.localPosition.x,
-// 					objectOkButton.transform.localPosition.y - moveDelta,
-// 					objectOkButton.transform.localPosition.z);
-// 			}
+			return;
+			const int DEFAULT_LINE = 3;  //메세지박스의 기본 크기가 3줄에 맞춰져 있다.
+			UILabel msg = objectDesc.GetComponent<UILabel>();
+			if (null == msg || null == msg.bitmapFont)
+				return;
+			Vector2 emptyLineSize = NGUIText.CalculatePrintedSize("");
+			Vector2 textSize = NGUIText.CalculatePrintedSize(msg.processedText);
+
+			//Vector2 emptyLineSize = msg.font.CalculatePrintedSize("", msg.supportEncoding, msg.symbolStyle);
+			//Vector2 textSize = msg.font.CalculatePrintedSize(msg.processedText, msg.supportEncoding, msg.symbolStyle);
+			int lineCnt = (int)(textSize.y / emptyLineSize.y);
+			float charHeight = msg.transform.localScale.y;
+
+			if (DEFAULT_LINE < lineCnt) {
+				int addedLineCnt = lineCnt - DEFAULT_LINE;
+				float moveDelta = addedLineCnt * (charHeight / 2);
+
+				//팝업의 윈도우BG 크기조절
+				sprite_popupWindow.transform.localScale = new Vector3(
+ 					sprite_popupWindow.transform.localScale.x,
+ 					sprite_popupWindow.transform.localScale.y + addedLineCnt * charHeight,
+ 					sprite_popupWindow.transform.localScale.z);
+
+				//타이틀바 위치 조절(위로)
+				sprite_titleBar.transform.localPosition = new Vector3(
+ 					sprite_titleBar.transform.localPosition.x,
+ 					sprite_titleBar.transform.localPosition.y + moveDelta,
+ 					sprite_titleBar.transform.localPosition.z);
+
+				//타이틀 텍스트 위치 조절(위로)
+				objectTitle.transform.localPosition = new Vector3(
+ 					objectTitle.transform.localPosition.x,
+ 					objectTitle.transform.localPosition.y + moveDelta,
+ 					objectTitle.transform.localPosition.z);
+
+				//취소버튼 위치 조절(아래로)
+				objectCancelButton.transform.localPosition = new Vector3(
+ 					objectCancelButton.transform.localPosition.x,
+ 					objectCancelButton.transform.localPosition.y - moveDelta,
+ 					objectCancelButton.transform.localPosition.z);
+
+				//확인 버튼 위치 조절(아래로)
+				objectOkButton.transform.localPosition = new Vector3(
+ 					objectOkButton.transform.localPosition.x,
+ 					objectOkButton.transform.localPosition.y - moveDelta,
+ 					objectOkButton.transform.localPosition.z);
+			}
 		}
 
 		// 파괴 될때... 클릭 상태 복구 해야문제가 없다.

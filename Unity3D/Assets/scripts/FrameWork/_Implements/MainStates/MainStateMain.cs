@@ -24,6 +24,7 @@ namespace HC
 		{
 			Logger.InfoFormat("MainStateNone.Awake !!");
 
+			gameObject.AddComponent<CMUPocketSphinx.TextToSpeech>();
 		}
 
 		// 해당 상태를 최초 상태로 초기화 하는곳
@@ -53,7 +54,7 @@ namespace HC
 			int loadCount = 0;
 
 			foreach (int idxScene in lstIdx) {
-				LoadingScreen.instance.ShowLoadingProress(loadCount / lstIdx.Length);
+				LoadingScreen.instance.SetProress(loadCount / lstIdx.Length);
 				loadCount++;
 
 #if DEV_BUILD && UNITY_EDITOR

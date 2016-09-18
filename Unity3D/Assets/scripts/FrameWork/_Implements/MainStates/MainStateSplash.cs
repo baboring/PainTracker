@@ -43,6 +43,7 @@ namespace HC
 			// when splash is finished, call next state
 			SplashScreen.instance.OnFinish = () => {
 				DestroyObject(SplashScreen.instance.gameObject);
+				LoadingScreen.Load();
 				//SplashScreen.instance = null;
 				MainStateManager.ChangeState(eMainState.Main);
 			};

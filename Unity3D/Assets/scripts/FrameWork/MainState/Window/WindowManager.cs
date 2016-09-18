@@ -34,11 +34,18 @@ namespace HC
 
 		new void Awake()
 		{
-			var uiRoot = gameObject.AddComponent<UIRoot>();
-			uiRoot.scalingStyle = UIRoot.Scaling.ConstrainedOnMobiles;
-			uiRoot.manualWidth = 640;
-			uiRoot.manualHeight = 1136;
+			//var uiRoot = gameObject.AddComponent<UIRoot>();
+			//uiRoot.scalingStyle = UIRoot.Scaling.ConstrainedOnMobiles;
+			//uiRoot.manualWidth = 640;
+			//uiRoot.manualHeight = 1136;
+			//gameObject.layer = LayerMask.NameToLayer("UI");
+			//gameObject.AddComponent<UIPanel>().depth = 2;
+
+			// attach other ui
 			gameObject.layer = LayerMask.NameToLayer("UI");
+			gameObject.transform.parent = Main.instance.transform;
+			gameObject.transform.localScale = new Vector3(1, 1, 1);
+
 			gameObject.AddComponent<UIPanel>().depth = 2;
 
 			ClearAll();

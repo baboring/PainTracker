@@ -38,7 +38,7 @@ namespace HC
 		public static int targetFrameRate = 60;
 
 		// Depth order
-		public const float DEPTH_BASE_MESSAGE_BOX = -350;
+		public const float DEPTH_BASE_MESSAGE_BOX = -10;
 		public const float DEPTH_BASE_SYSTEM = -300;		// (Exit App , Reconnect , WaitResponse )
 		public const float DEPTH_BASE_WEBVIEW = -990;		// Web View
 
