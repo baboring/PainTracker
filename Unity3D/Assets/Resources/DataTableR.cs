@@ -14,10 +14,7 @@ namespace HC {
 		private static R _instance;
 		public static R instance { get {return _instance;} }
 		public R() {
-			Assert = delegate(bool p) {
-				if (!p)
-					throw new System.ApplicationException("internal error or data corrupt!");
-			};
+			Assert = assert_;
 		}
 
 		public static bool Create(string path = "") {
@@ -37,7 +34,7 @@ namespace HC {
 			try {
 				mapCSVTable = ReadCSV_FromAsset(path + "csv_Data/MessageTable");
 				Assert(null != mapCSVTable);
-				foreach(var tb in mapCSVTable) { 
+				if(null != mapCSVTable) { 
 					if (mapCSVTable.TryGetValue("SystemMsg", out table)) {
 						var dic = this._data_SystemMsg = new Dictionary<SystemMsg.eKey, R.SystemMsg>();
 						foreach (var rec in table.tRecords) {
@@ -48,6 +45,47 @@ namespace HC {
 							dic.Add(newOne.id, newOne);
 						}
 					}
+					if (mapCSVTable.TryGetValue("Speeches", out table)) {
+						var dic = this._data_Speeches = new Dictionary<Speeches.eKey, R.Speeches>();
+						foreach (var rec in table.tRecords) {
+							R.Speeches newOne = new R.Speeches() {
+								id = rec.tContents[0].ToEnum<Speeches.eKey>(),
+								StrValue = rec.tContents[1],
+								Search = rec.tContents[2],
+								StrHelp = rec.tContents[3],
+								StrMotion = rec.tContents[4],
+								json = rec.tContents[5],
+							};
+							dic.Add(newOne.id, newOne);
+						}
+					}
+					if (mapCSVTable.TryGetValue("Answer", out table)) {
+						var dic = this._data_Answer = new Dictionary<int, R.Answer>();
+						foreach (var rec in table.tRecords) {
+							R.Answer newOne = new R.Answer() {
+								IDX = rec.tContents[0],
+								szSentence = rec.tContents[1],
+								szQType = rec.tContents[2],
+								szAType = rec.tContents[3],
+								szNext = rec.tContents[4],
+							};
+							dic.Add(newOne.IDX, newOne);
+						}
+					}
+					if (mapCSVTable.TryGetValue("Seq", out table)) {
+						var dic = this._data_Seq = new Dictionary<Seq.eState, R.Seq>();
+						foreach (var rec in table.tRecords) {
+							R.Seq newOne = new R.Seq() {
+								state = rec.tContents[0].ToEnum<Seq.eState>(),
+								speak = rec.tContents[1],
+								condition = rec.tContents[2],
+								cond_set = rec.tContents[3],
+								elseCase = rec.tContents[4],
+								next = rec.tContents[5].ToEnum<Seq.eState>(),
+							};
+							dic.Add(newOne.state, newOne);
+						}
+					}
 				}
 			}
 			catch (System.Exception e) {
@@ -56,7 +94,7 @@ namespace HC {
 			try {
 				mapCSVTable = ReadCSV_FromAsset(path + "csv_Data/SecureInfo");
 				Assert(null != mapCSVTable);
-				foreach(var tb in mapCSVTable) { 
+				if(null != mapCSVTable) { 
 					if (mapCSVTable.TryGetValue("Secure", out table)) {
 						var dic = this._data_Secure = new Dictionary<Secure.eKey, R.Secure>();
 						foreach (var rec in table.tRecords) {
@@ -85,7 +123,7 @@ namespace HC {
 			try {
 				mapCSVTable = ReadCSV_FromAsset(path + "csv_Data/TestData_Builder");
 				Assert(null != mapCSVTable);
-				foreach(var tb in mapCSVTable) { 
+				if(null != mapCSVTable) { 
 					if (mapCSVTable.TryGetValue("DefaultValue", out table)) {
 						var dic = this._data_DefaultValue = new Dictionary<int, R.DefaultValue>();
 						foreach (var rec in table.tRecords) {
@@ -117,7 +155,7 @@ namespace HC {
 			try {
 				mapCSVTable = ReadCSV_FromAsset(path + "csv_Data/TestData_Use");
 				Assert(null != mapCSVTable);
-				foreach(var tb in mapCSVTable) { 
+				if(null != mapCSVTable) { 
 					if (mapCSVTable.TryGetValue("MessageBox", out table)) {
 						var dic = this._data_MessageBox = new Dictionary<string, R.MessageBox>();
 						foreach (var rec in table.tRecords) {
@@ -158,13 +196,17 @@ namespace HC {
 		}
 
 		Dictionary<string, string[]> tableMap = new Dictionary<string, string[]> {
-			{ "csv_Data/MessageTable.csv",new string[] {"SystemMsg", }},
+			{ "csv_Data/MessageTable.csv",new string[] {"SystemMsg", "Speeches", "Answer", "Seq", }},
 			{ "csv_Data/SecureInfo.csv",new string[] {"Secure", "illegalApp", }},
 			{ "csv_Data/TestData_Builder.csv",new string[] {"DefaultValue", "TestEnumTable", }},
 			{ "csv_Data/TestData_Use.csv",new string[] {"MessageBox", }},
 		};
 
-		public delegate void AssertFunc( bool proposition );
+		void  assert_( bool proposition, string szFormat = null, params object[] p ) {
+			if (!proposition)
+				throw new System.ApplicationException("internal error or data corrupt!");
+		}
+		public delegate void AssertFunc( bool proposition, string szFormat = null, params object[] p );
 		private AssertFunc Assert		{ get; set; }
 		// -----------------------------------------------
 		public static SystemMsg GetSystemMsg(SystemMsg.eKey key) {
@@ -174,6 +216,30 @@ namespace HC {
 		}
 		public static bool TryGetSystemMsg(SystemMsg.eKey key,out SystemMsg val) {
 			return (_instance._data_SystemMsg.TryGetValue(key, out val));
+		}
+		public static Speeches GetSpeeches(Speeches.eKey key) {
+			if (_instance._data_Speeches.ContainsKey(key))
+				return _instance._data_Speeches[key];
+			return null;
+		}
+		public static bool TryGetSpeeches(Speeches.eKey key,out Speeches val) {
+			return (_instance._data_Speeches.TryGetValue(key, out val));
+		}
+		public static Answer GetAnswer(int key) {
+			if (_instance._data_Answer.ContainsKey(key))
+				return _instance._data_Answer[key];
+			return null;
+		}
+		public static bool TryGetAnswer(int key,out Answer val) {
+			return (_instance._data_Answer.TryGetValue(key, out val));
+		}
+		public static Seq GetSeq(Seq.eState key) {
+			if (_instance._data_Seq.ContainsKey(key))
+				return _instance._data_Seq[key];
+			return null;
+		}
+		public static bool TryGetSeq(Seq.eState key,out Seq val) {
+			return (_instance._data_Seq.TryGetValue(key, out val));
 		}
 
 		/// MessageTable
@@ -197,9 +263,78 @@ namespace HC {
 
 		}
 
+		public class Speeches {
+
+			public eKey id;
+			public string StrValue;
+			public string Search;
+			public string StrHelp;
+			public string StrMotion;
+			public string json;
+
+			public enum eKey : int {
+				Welcome,
+				Greeting,
+				AskHelp,
+				AskHelp2,
+				PainTrackerIntro,
+				PainTrackerTouch,
+				PainTrackerHowPain,
+				AnythingElse,
+				WhichPart,
+				HowAreYou,
+			}
+
+
+		}
+
+		public class Answer {
+
+			public int IDX;
+			public string szSentence;
+			public string szQType;
+			public string szAType;
+			public string szNext;
+
+		}
+
+		public class Seq {
+
+			public eState state;
+			public string speak;
+			public string condition;
+			public string cond_set;
+			public string elseCase;
+			public Seq.eState next;
+
+			public enum eState : int {
+				Sleep,
+				Greet,
+				AskDoForYou,
+				AskWhich,
+				AskHowDensity,
+				AskConfirm,
+				Finish,
+			}
+
+
+		}
+
 		private Dictionary<SystemMsg.eKey, SystemMsg> _data_SystemMsg;
 		public static Dictionary<SystemMsg.eKey, SystemMsg> AllSystemMsg {
 			get { return _instance._data_SystemMsg; }
+		}
+		private Dictionary<Speeches.eKey, Speeches> _data_Speeches;
+		public static Dictionary<Speeches.eKey, Speeches> AllSpeeches {
+			get { return _instance._data_Speeches; }
+		}
+		private Dictionary<int, Answer> _data_Answer;
+		public static Dictionary<int, Answer> AllAnswer {
+			get { return _instance._data_Answer; }
+		}
+		private Dictionary<Seq.eState, Seq> _data_Seq;
+		public static Dictionary<Seq.eState, Seq> AllSeq {
+			get { return _instance._data_Seq; }
 		}
 
 

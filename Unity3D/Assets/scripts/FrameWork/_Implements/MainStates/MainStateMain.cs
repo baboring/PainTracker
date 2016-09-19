@@ -17,14 +17,13 @@ namespace HC
 				WndID.WndMain,
 				WndID.WndSetting,
 				WndID.WndMenu,
+				WndID.WndRegister,
 			};
 		}
 
 		void Awake()
 		{
 			Logger.InfoFormat("MainStateNone.Awake !!");
-
-			gameObject.AddComponent<CMUPocketSphinx.TextToSpeech>();
 		}
 
 		// 해당 상태를 최초 상태로 초기화 하는곳
@@ -35,12 +34,18 @@ namespace HC
 
 		override public void OnEnter()
 		{
+			Action<bool> complete = (success) => {
+				IsPrearedState = true;
+				WindowManager.SetActiveWindow(WndID.WndMain, true);
+			};
+
 			// Window Load가 없으니 바로 완료
-			if(MainStateManager.PreviousState == eMainState.Splash) {
-				StartCoroutine(LoadSceneProcess(()=>OnLoadComplete()));
+			if (MainStateManager.PreviousState == eMainState.Splash) {
+				VoiceRecognizeMain.CreateInstance();
+				TextToSpeechMain.CreateInstance();
+				StartCoroutine(LoadSceneProcess(()=> complete(true)));
 				return;
 			}
-			Action<bool> complete = (success) => OnLoadComplete();
 			complete(true);
 		}
 
@@ -66,6 +71,15 @@ namespace HC
 				// go 활성화 모두 시켰으면 고고...
 				while (!InitialWindows.IsLoadComplete)
 					yield return null;
+
+				// wait for initializing voice recognizer
+				while(!VoiceRecognizeMain.instance.IsInstalled)
+					yield return null;
+
+				while (!TextToSpeechMain.instance.IsInstalled)
+					yield return null;
+				
+
 				Logger.DebugFormat("End Async Load Sceen Done : {0}", idxScene);
 				yield return null;
 				LoadingScreen.instance.Show(false);
@@ -77,11 +91,6 @@ namespace HC
 
 		override public void OnUpdate() { }
 
-		override public void OnLoadComplete()
-		{
-			IsPrearedState = true;
-			WindowManager.SetActiveWindow(WndID.WndMain,true);
-		}
 	}
 
 }

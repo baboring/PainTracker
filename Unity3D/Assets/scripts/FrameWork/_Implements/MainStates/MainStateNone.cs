@@ -30,7 +30,9 @@ namespace HC
 		override public void OnEnter()
 		{
 			// Window Load가 없으니 바로 완료
-			Action<bool> complete = (success) => OnLoadComplete();
+			Action<bool> complete = (success) => {
+				IsPrearedState = true;
+			};
 			complete(true);
 		}
 
@@ -38,10 +40,6 @@ namespace HC
 
 		override public void OnUpdate() { }
 
-		override public void OnLoadComplete()
-		{
-			IsPrearedState = true;
-		}
 	}
 
 }

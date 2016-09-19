@@ -5,7 +5,11 @@ namespace HC
 {
     public class wndRegister : WindowBase
     {
-        public GameObject obnBtnSubmit;
+		public UIInput uiName;
+		public UIInput uiPhone;
+
+		public GameObject obnBtnSubmit;
+		public GameObject obnBtnCancel;
 
 		// Use this for initialization
 		protected override void Awake()
@@ -14,9 +18,20 @@ namespace HC
             eWindowType = WndType.Popup;
 
             base.Awake();
+			uiName.value = PlayerSaveInfo.instance.userName_;
+			uiPhone.value = PlayerSaveInfo.instance.userPhone_;
 
-            ButtonHandler.CreateHandle(0, obnBtnSubmit, true, true, (btn) =>
-            {
+			ButtonHandler.CreateHandle(0, obnBtnSubmit, true, true, (btn) => {
+				PlayerSaveInfo.instance.userName_ = uiName.value;
+				PlayerSaveInfo.instance.userPhone_ = uiPhone.value;
+				PlayerSaveInfo.instance.Save();
+				CloseSelfWindow();
+			});
+			ButtonHandler.CreateHandle(0, obnBtnCancel, true, true, (btn) => {
+				if(string.IsNullOrEmpty(PlayerSaveInfo.instance.userName_)) {
+					MessageBoxManager.Show("Register","You should input your name!");
+					return;
+				}
                 CloseSelfWindow();
             });
         }

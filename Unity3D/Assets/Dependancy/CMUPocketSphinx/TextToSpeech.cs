@@ -8,13 +8,11 @@ namespace CMUPocketSphinx
 {
     public class TextToSpeech : MonoBehaviour, OnTTSListener {
 
-		private string _currentGUID;
-
-		public static OnVoiceRecognizeListener listener;
+		public bool IsInstalled { get; private set; }
 
 		// initialization
 		void Awake() {
-            _currentGUID = System.Guid.NewGuid().ToString();
+			string _currentGUID = System.Guid.NewGuid().ToString();
             gameObject.name = gameObject.name + _currentGUID;
 			TTSHelper.Initialize(gameObject.name, TTSHelper.UnitedKingdom);
 		}
@@ -27,6 +25,7 @@ namespace CMUPocketSphinx
         }
 
 		public void _OnInitialized(string msg) {
+			IsInstalled = true;
 			Debug.Log(msg);
 		}
 
@@ -35,6 +34,10 @@ namespace CMUPocketSphinx
 		}
 
 		public void _OnDone(string msg) {
+			Debug.Log(msg);
+		}
+
+		public void _OnError(string msg) {
 			Debug.Log(msg);
 		}
 

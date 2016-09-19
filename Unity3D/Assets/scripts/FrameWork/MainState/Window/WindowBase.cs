@@ -61,9 +61,9 @@ namespace HC
 
 			if (null != proc) {
 				
-				vDelta.x = proc.position.x + vDelta.x;
-				vDelta.y = proc.position.y + vDelta.y;
-				vDelta.z = proc.position.z + vDelta.z;
+				vDelta.x = proc.value.x + vDelta.x;
+				vDelta.y = proc.value.y + vDelta.y;
+				vDelta.z = proc.value.z + vDelta.z;
 				TweenPosition.Begin(obj, fDuration, vDelta);
 			}
 		}
@@ -330,8 +330,7 @@ namespace HC
 		//}
 
 		// WindowManager만 접근해야 한다.
-		public void ShowWindow(WndVisible eShowWindow)
-		{
+		public void ShowWindow(WndVisible eShowWindow) {
             Logger.Assert(eShowWindow == WndVisible.Show || eShowWindow == WndVisible.Hide,"unable working !!");
 			if (eShowWindow == WndVisible.Show)
 				OnOpenWindow();
@@ -339,12 +338,10 @@ namespace HC
 				OnCloseWindow();
         }
 
-		virtual protected void OnOpenWindow()
-		{
+		virtual protected void OnOpenWindow() {
 			gameObject.SetActive(true);
 
             if (WndType.Popup == eWindowType && null != objAnimation) {
-
 				//StopAniCoroutine();
 				//StartCoroutine(OpenAni());
 				windowAnimation(true);

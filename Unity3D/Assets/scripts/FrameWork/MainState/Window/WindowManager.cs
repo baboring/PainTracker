@@ -41,6 +41,11 @@ namespace HC
 			//gameObject.layer = LayerMask.NameToLayer("UI");
 			//gameObject.AddComponent<UIPanel>().depth = 2;
 
+			if(null == Main.instance) {
+				Application.LoadLevel(0);
+				DestroyObject(this.gameObject);
+				return;
+			}
 			// attach other ui
 			gameObject.layer = LayerMask.NameToLayer("UI");
 			gameObject.transform.parent = Main.instance.transform;

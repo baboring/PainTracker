@@ -38,7 +38,11 @@ namespace HC
 
 			//GlobalData.Instance.Initialize();
 
-			OnLoadComplete();
+			IsPrearedState = true;
+
+			// Logon 상태로 이동
+			if (MainStateManager.CurrentState != eMainState.Patch)
+				MainStateManager.ChangeState(eMainState.Patch);
 		}
 
 		override public void OnLeave()
@@ -51,15 +55,6 @@ namespace HC
 
 		}
 
-		override public void OnLoadComplete()
-		{
-			IsPrearedState = true;
-
-			// Logon 상태로 이동
-			if (MainStateManager.CurrentState != eMainState.Patch)
-				MainStateManager.ChangeState(eMainState.Patch);
-
-		}
 	}
 
 }

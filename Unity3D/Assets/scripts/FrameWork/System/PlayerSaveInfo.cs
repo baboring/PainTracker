@@ -12,7 +12,7 @@ using System.Collections.Generic;
 namespace HC
 {
     // 계정 저장 정보
-    public class PlayerSaveInfo : ManualSingletonMB<PlayerSaveInfo>
+    public class PlayerSaveInfo : SingletonMB<PlayerSaveInfo>
     {
         ///////////////////////////////////////////////////////////
 
@@ -23,10 +23,10 @@ namespace HC
         const string key_NextOpenDays = "NextOpenDays";
         const string key_Mail = "Mail";
         const string key_Pwd = "Pwd";
-        const string key_Nick = "Name";
-        const string keySoundBGM = "SoundBGM";
+        const string key_Name = "Name";
+		const string key_Phone = "Phone";
+		const string keySoundBGM = "SoundBGM";
         const string keySoundEffect = "SoundEffect";
-        const string key_ShuffleCard = "ShuffleCard";
         const string key_AutoPlay = "AutoPlay";
         const string key_Switch = "Switch";
         const string key_Repeat = "Repeat";
@@ -41,11 +41,13 @@ namespace HC
                                                         ///////////////////////////////////////////////////////////
         public string guest_Account_ = string.Empty;    // Guest Account
 
-        public string userId = string.Empty;        // Email 계정
-        public string pwd_ = string.Empty;      // password
-        public string name_ = string.Empty;     // 이름(NickName)
+		private string userId = string.Empty;        // Email 계정
+		private string pwd_ = string.Empty;      // password
 
-        public bool IsSaveAccount = true;       // 계정 저장 On/Off
+        public string userName_ = string.Empty;     // 이름(NickName)
+		public string userPhone_ = string.Empty;     // phone number
+
+		public bool IsSaveAccount = true;       // 계정 저장 On/Off
         public bool IsAutoLogin = true;         // 자동 로그인
         public bool IsAgreements = false;       // 이용약관 동의
 
@@ -56,26 +58,23 @@ namespace HC
         // 싱글톤 인스턴스 생성
         public static void CreateInstance()
         {
-            if (instance == null)
-            {
-                instance = new GameObject("HC.PlayerSaveInfo").AddComponent<PlayerSaveInfo>();
-                DontDestroyOnLoad(instance.gameObject);
-            }
-            //instance.Load();
+            if (!IsInstanced)
+				instance.Initial();
         }
 
         public static void DestroyInstance()
         {
-            if (null != instance)
-                DestroyImmediate(instance.gameObject);
+			if (IsInstanced)
+				SelfDestroy();
         }
 
-        void Awake()
-        {
-        }
+		public override void Initial() {
+			base.Initial();
+			Load();
+		}
 
-        // 불어오기
-        public bool Load()
+		// 불어오기
+		public bool Load()
         {
             if (IsNotUseProfile)    // bot은 읽지 하지 않는다.
                 return true;
@@ -94,9 +93,10 @@ namespace HC
                 userId = EncryptedPlayerPrefs.GetString(key_Mail);
                 pwd_ = EncryptedPlayerPrefs.GetString(key_Pwd);
             }
-            name_ = EncryptedPlayerPrefs.GetString(key_Nick);
+            userName_ = EncryptedPlayerPrefs.GetString(key_Name);
+			userPhone_ = EncryptedPlayerPrefs.GetString(key_Phone);
 
-            Logger.InfoFormat("Load PlayerSaveInfo : {0}", userId);
+			Logger.InfoFormat("Load PlayerSaveInfo : {0}", userId);
 
             return true;
         }
@@ -126,9 +126,10 @@ namespace HC
             // 옵션에 따른 저장
             EncryptedPlayerPrefs.SetString(key_Mail, (IsSaveAccount) ? userId : "");
             EncryptedPlayerPrefs.SetString(key_Pwd, (IsSaveAccount) ? pwd_ : "");
-            EncryptedPlayerPrefs.SetString(key_Nick, name_);
+            EncryptedPlayerPrefs.SetString(key_Name, userName_);
+			EncryptedPlayerPrefs.SetString(key_Phone, userPhone_);
 
-            return true;
+			return true;
         }
 
         // 게스트 계정을 사용 하는지
@@ -166,24 +167,7 @@ namespace HC
                 return;
             EncryptedPlayerPrefs.SetInt(keySoundEffect, (bEnable) ? 1 : 0);
         }
-
-        // Option / Shuffle Card
-        public bool IsShuffleCard
-        {
-            get
-            {
-                if (IsNotUseProfile)    // bot은 하지 않는다.
-                    return false;
-                return (EncryptedPlayerPrefs.GetInt(key_ShuffleCard, 0) != 0);
-            }
-
-            set
-            {
-                if (IsNotUseProfile)    // bot은 하지 않는다.
-                    return;
-                EncryptedPlayerPrefs.SetInt(key_ShuffleCard, (value) ? 1 : 0);
-            }
-        }
+		
         // Option / AutoPlay
         public bool IsAutoPlay
         {
@@ -278,9 +262,10 @@ namespace HC
 
             userId = string.Empty;
             pwd_ = string.Empty;
-            name_ = string.Empty;
+            userName_ = string.Empty;
+			userPhone_ = string.Empty;
 
-            Save();
+			Save();
         }
 
         // Push 등록 상태 

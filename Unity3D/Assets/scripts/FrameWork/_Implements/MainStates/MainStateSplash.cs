@@ -24,7 +24,16 @@ namespace HC
 		override public void OnEnter()
 		{
 			// 씬로드에서 안해주니 여기서 완료시 
-			SceneLoader.LoadAsyncIdx(SCENE_IDX.SPLASH, (success) => OnLoadComplete());
+			SceneLoader.LoadAsyncIdx(SCENE_IDX.SPLASH, (success) => {
+				IsPrearedState = true;
+				// when splash is finished, call next state
+				SplashScreen.instance.OnFinish = () => {
+					DestroyObject(SplashScreen.instance.gameObject);
+					LoadingScreen.Load();
+					//SplashScreen.instance = null;
+					MainStateManager.ChangeState(eMainState.Main);
+				};
+			});
 		}
 
 		override public void OnLeave()
@@ -37,17 +46,6 @@ namespace HC
 
 		}
 
-		override public void OnLoadComplete()
-		{
-			IsPrearedState = true;
-			// when splash is finished, call next state
-			SplashScreen.instance.OnFinish = () => {
-				DestroyObject(SplashScreen.instance.gameObject);
-				LoadingScreen.Load();
-				//SplashScreen.instance = null;
-				MainStateManager.ChangeState(eMainState.Main);
-			};
-		}
 	}
 
 }

@@ -27,7 +27,10 @@ namespace HC
         override public void OnEnter()
         {
             // Window Load가 없으니 바로 완료
-            Action<bool> complete = (success) => OnLoadComplete();
+            Action<bool> complete = (success) => {
+				IsPrearedState = true;
+				WindowManager.SetActiveWindow(WndID.WndSetting, true);
+			};
             complete(true);
 
         }
@@ -35,12 +38,6 @@ namespace HC
 			WindowManager.SetActiveWindow(WndID.WndSetting, false);
 		}
         override public void OnUpdate() { }
-
-        override public void OnLoadComplete()
-        {
-            IsPrearedState = true;
-            WindowManager.SetActiveWindow(WndID.WndSetting, true);
-        }
     }
 
 }

@@ -39,7 +39,8 @@ ECHO Project Path=%DIR_BIN_SRC%
 ::Clean and copy Binary 
 echo ### Clean and copy Binary ###
 rd %DIR_BIN_DEST% /s /q
-xcopy %DIR_BIN_SRC%\*.* %DIR_BIN_DEST%\*.* /s /e /y
+::xcopy %DIR_BIN_SRC%\*.* %DIR_BIN_DEST%\*.* /s /e /y
+move /y %DIR_BIN_SRC% %DIR_BIN_DEST%
 
 ::Copy Jin
 ::echo ### Copy Jin ###

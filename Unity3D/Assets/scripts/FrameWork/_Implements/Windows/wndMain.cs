@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using CMUPocketSphinx;
 
 namespace HC
 {
-    public class wndMain : WindowBase
-    {
+    public class wndMain : WindowBase {
 		public GameObject objRecording;
 		public GameObject objListening;
 		public GameObject objMenuButton;
@@ -15,19 +15,16 @@ namespace HC
 		public Human objHuman;
 
 		// Use this for initialization
-		protected override void Awake()
-        {
+		protected override void Awake() {
             eWindowID = WndID.WndMain;
             base.Awake();
 
 			ButtonHandler.CreateHandle(0, objMenuButton, true, true, (btn) => {
 				MainStateManager.ChangeState(eMainState.Menu);
 			});
-
 		}
 
-        protected override void OnOpenWindow()
-        {
+		protected override void OnOpenWindow() {
             base.OnOpenWindow();
 
             // 순차적 진행
@@ -36,20 +33,24 @@ namespace HC
 
 		IEnumerator progressInitial()
         {
-            yield return new WaitForFixedUpdate();
+            yield return null;
 
+			if(string.IsNullOrEmpty(PlayerSaveInfo.instance.userName_)) {
+				WindowManager.OpenPopup(WndID.WndRegister);
+				while(string.IsNullOrEmpty(PlayerSaveInfo.instance.userName_))
+					yield return new WaitForFixedUpdate();
+			}
 
-			//nameArray = EasyTTSUtil.GetEngineNameArray();
-			//pkgArray = EasyTTSUtil.GetEnginePkgArray();
-
-			//if (null != pkgArray)
-			//	foreach (var item in pkgArray) {
-			//		popupList.AddItem(item);
-			//	}
-
-			//// welcome message
-			//yield return new WaitForSeconds(2);
-			////EasyTTSUtil.SpeechAdd("Welcome");
+			// test 
+			TextToSpeechMain.instance.callbackSpeakStart = (msg) => {
+				VoiceRecognizerHelper.StopListening();
+			};
+			TextToSpeechMain.instance.callbackSpeakDone = (msg) => {
+				//VoiceRecognizerHelper.StartListening(VoiceRecognizerHelper.KWS_SEARCH);
+				VoiceRecognizerHelper.StartListening(VoiceRecognizerHelper.GREET_SEARCH);
+			};
+			//TextToSpeechMain.Speak(R.Speeches.eKey.Greeting, PlayerSaveInfo.instance.userName_);
+			TextToSpeechMain.Speak(R.Speeches.eKey.Welcome, PlayerSaveInfo.instance.userName_);
 
 			lblHelpMessage.text = "Hello, Pretty Aden";
 			SetSpeechText("");
@@ -65,6 +66,7 @@ namespace HC
 			lblTextSpeech.text = text;
 			objHuman.filterAnimation(text);
 		}
+
 		public void SetHelpMessage(string text)
 		{
 			lblHelpMessage.text = text;
@@ -106,14 +108,15 @@ namespace HC
 		public void OnWakeup(string msg)
 		{
 			OnVoiceRecordOff();
-			objHuman.OnSay("Which part do you have pain?", "shaking_hands_2");
+			TextToSpeechMain.Speak(R.Speeches.eKey.WhichPart);
+			objHuman.Motion( "shaking_hands_2");
 			CameraController.instance.SetZoomInOut(ZOOM_ID.NONE, false);
 		}
 
 		public void OnSaySomething(string txt)
 		{
 			OnVoiceRecordOff();
-			TTSHelper.SpeechFlush(txt);
+			TextToSpeechMain.Speak(txt);
 			Debug.Log("OnSaySomething : " + txt);
 			WindowManager.GetWindow<wndMain>().objHuman.filterAnimation(txt);
 

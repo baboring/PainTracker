@@ -39,6 +39,8 @@ public class BuildWizard : ScriptableWizard
 
 	public int revNumber = 11200; //12.16
 
+	public BuildOptions options = BuildOptions.None;
+
 	public bool definePlatformKakao = false;
 	public bool defineUseLocalPparam = false;
 
@@ -118,6 +120,15 @@ public class BuildWizard : ScriptableWizard
 		buildWiz.ApplyDefine();
 	}
 
+	[MenuItem("Build Wizard/Open Export")]
+	static void MenuExportCall() {
+		BuildWizard buildWiz = BuildWizard.DisplayWizard("Build Settings", typeof(BuildWizard), "Start Export", "Apply And Save") as BuildWizard;
+		buildWiz.options = BuildOptions.InstallInBuildFolder | BuildOptions.AcceptExternalModificationsToPlayer;
+		buildWiz.ReadJsonSettings();
+		buildWiz.OnWizardUpdate();
+		buildWiz.ApplyDefine();
+	}
+
 	/// 뭔가를 갱신하면 호출
 	void OnWizardUpdate()
 	{
@@ -160,7 +171,7 @@ public class BuildWizard : ScriptableWizard
 		APPVersionModify();		//버전정보, 빌드번호 적용
 		SaveJsonSettings();		//셋팅 저장
 
-		bool result = RunUnityBuild();		//유니티로 빌드
+		bool result = RunUnityBuild("Build");		//유니티로 빌드
 
 		if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.iPhone)
 		{
@@ -332,8 +343,7 @@ public class BuildWizard : ScriptableWizard
 				EditorApplication.ExecuteMenuItem("Assets/Sync MonoDevelop Project");
 
 			//android apk 파일명 만들기
-			if (string.IsNullOrEmpty(destPath))
-			{
+			if (string.IsNullOrEmpty(destPath)) {
 				string outFileName = GetPackageFileName();
 				var current_d = System.IO.Directory.GetCurrentDirectory();
 				target = System.IO.Path.Combine(current_d, outFileName);
@@ -341,27 +351,20 @@ public class BuildWizard : ScriptableWizard
 			else
 				target = string.Format("{0}\\{1}", destPath, GetPackageFileName());
 		}
-		else if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.iPhone)
-		{
+		else if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.iPhone) {
 			//ios 는 xcode 용 프로젝트 파일 export 폴더
 			target = XCODE_PRJ_EXPORT_PATH;
 		}
-		else
-		{
+		else {
 			if (string.IsNullOrEmpty(destPath))
-			{
 				target = "../../../Build/PC Standalone/Project_S_Dev.exe";
-			}
 			else
-			{
 				target = destPath; //pc는 destPath 에 파일명까지 포함되어 있음
-			}
 		}
 
-		if (!string.IsNullOrEmpty(target))
-		{
+		if (!string.IsNullOrEmpty(target)) {
 			string[] sceneLevels = EditorBuildSettings.scenes.Where(ss => ss.enabled).Select(s => s.path).ToArray();
-			string error = BuildPipeline.BuildPlayer(sceneLevels, target, EditorUserBuildSettings.activeBuildTarget, BuildOptions.None);
+			string error = BuildPipeline.BuildPlayer(sceneLevels, target, EditorUserBuildSettings.activeBuildTarget, this.options);
 			return (string.IsNullOrEmpty(error) ? true : false);
 		}
 

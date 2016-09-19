@@ -6,6 +6,7 @@ public interface OnTTSListener {
 	void _OnInitialized(string msg);
 	void _OnStart(string text);
 	void _OnDone(string text);
+	void _OnError(string text);
 }
 
 public class TTSHelper {

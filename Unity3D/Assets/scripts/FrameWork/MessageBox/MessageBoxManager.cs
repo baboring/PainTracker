@@ -104,7 +104,7 @@ namespace HC
 				gameObject.layer = LayerMask.NameToLayer("UI");
 				gameObject.transform.parent = Main.instance.transform;
 				gameObject.transform.localScale = new Vector3(1, 1, 1);
-				gameObject.AddComponent<UIPanel>().depth = 2;
+				gameObject.AddComponent<UIPanel>().depth = 20;
 
 			}
 			//objRoot = GameObject.Find("Root");

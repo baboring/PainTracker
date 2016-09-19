@@ -35,7 +35,8 @@ namespace HC
 
 			// Help button
 			ButtonHandler.CreateHandle(0, objBtnHelp, true, true, (btn) => {
-				WindowManager.GetWindow<wndMain>().objHuman.OnSay("What may I help you?", "shaking_hands_2");
+				TextToSpeechMain.Speak(R.Speeches.eKey.AskHelp2);
+				WindowManager.GetWindow<wndMain>().objHuman.Motion("shaking_hands_2");
 			});
 		}
 

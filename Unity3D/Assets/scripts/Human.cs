@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Human : MonoBehaviour {
 
-    public Animator ani;
+	public Animator ani;
 
     void Awake() {
 		if(null == ani)
@@ -61,12 +61,10 @@ public class Human : MonoBehaviour {
         }
     }
 
-	public void OnSay(string something, string animation = "")
+	public void Motion(string animation = "")
 	{
 		if (animation.Length > 0)
 			ani.CrossFade(animation, 0.03f);
-
-		TTSHelper.SpeechFlush(something);
 	}
 	
 }

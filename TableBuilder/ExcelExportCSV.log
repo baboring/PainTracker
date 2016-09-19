@@ -1,0 +1,30 @@
+------------------ Log start ------------------
+2016-09-19 11:13:30 INFO - Read From Excel D:\Workspace\Project.Health\trunk\TableBuilder\xlsx_Data/SecureInfo.xlsx
+2016-09-19 11:13:32 INFO - Total Sheets 2
+2016-09-19 11:13:32 INFO - Read Sheet 'Secure'
+2016-09-19 11:13:32 INFO - Read Sheet 'illegalApp'
+2016-09-19 11:13:35 INFO - Write CSV : SecureInfo
+2016-09-19 11:13:35 INFO - Write File : ./csv_Data/SecureInfo.csv
+2016-09-19 11:13:36 INFO - Write File : ..\Unity3D\Assets\Resources\csv_Data\SecureInfo.csv
+2016-09-19 11:13:36 INFO - Read From Excel D:\Workspace\Project.Health\trunk\TableBuilder\xlsx_Data/MessageTable.xlsx
+2016-09-19 11:13:37 INFO - Total Sheets 4
+2016-09-19 11:13:37 INFO - Read Sheet 'SystemMsg'
+2016-09-19 11:13:37 INFO - Read Sheet 'Speeches'
+2016-09-19 11:13:38 INFO - Read Sheet 'Answer'
+2016-09-19 11:13:39 INFO - Read Sheet 'Seq'
+2016-09-19 11:13:39 INFO - Write CSV : MessageTable
+2016-09-19 11:13:39 INFO - Write File : ./csv_Data/MessageTable.csv
+2016-09-19 11:13:39 INFO - Write File : ..\Unity3D\Assets\Resources\csv_Data\MessageTable.csv
+2016-09-19 11:13:39 INFO - Read From Excel D:\Workspace\Project.Health\trunk\TableBuilder\xlsx_Data/TestData_Builder.xlsx
+2016-09-19 11:13:41 INFO - Total Sheets 2
+2016-09-19 11:13:41 INFO - Read Sheet 'DefaultValue'
+2016-09-19 11:13:44 INFO - Read Sheet 'TestEnumTable'
+2016-09-19 11:13:45 INFO - Write CSV : TestData_Builder
+2016-09-19 11:13:45 INFO - Write File : ./csv_Data/TestData_Builder.csv
+2016-09-19 11:13:45 INFO - Write File : ..\Unity3D\Assets\Resources\csv_Data\TestData_Builder.csv
+2016-09-19 11:13:45 INFO - Read From Excel D:\Workspace\Project.Health\trunk\TableBuilder\xlsx_Data/TestData_Use.xlsx
+2016-09-19 11:13:46 INFO - Total Sheets 1
+2016-09-19 11:13:46 INFO - Read Sheet 'MessageBox'
+2016-09-19 11:13:47 INFO - Write CSV : TestData_Use
+2016-09-19 11:13:47 INFO - Write File : ./csv_Data/TestData_Use.csv
+2016-09-19 11:13:47 INFO - Write File : ..\Unity3D\Assets\Resources\csv_Data\TestData_Use.csv
