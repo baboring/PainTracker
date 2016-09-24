@@ -10,7 +10,7 @@ public class PhoneCallHelper
 
         if (Application.platform == RuntimePlatform.Android)
         {
-            javaClassTTS = new AndroidJavaClass("com.narith.pocketsphinx.SpeechManager");
+            javaClassTTS = new AndroidJavaClass("com.narith.pocketsphinx.PhoneCall");
             DebugTools.Assert(null != javaClassTTS, "ttsHandle is failed to initialize!!");
 
             return javaClassTTS.CallStatic<bool>("_Create", JavaClassHelper.GetCurrentActivity(), gameObjectName);
