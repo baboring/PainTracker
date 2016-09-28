@@ -148,7 +148,7 @@ namespace HC
 			}
 
 			// 여기서 해줘야 된다.
-			MainStateManager.OnLoadedWindow(wndBase);
+			AppStateManager.OnLoadedWindow(wndBase);
 		}
 	
 		#endregion

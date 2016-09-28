@@ -12,7 +12,7 @@ namespace HC
 	}
 
 	// state base
-	public abstract class MainStateBase : MonoBehaviour
+	public abstract class AppStateBase : MonoBehaviour
 	{
 		protected AsyncOperation async_operation_;
 		protected WndID[] eInitialWindows;					// window 초기 리스트 목록

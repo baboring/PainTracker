@@ -30,4 +30,19 @@ public static class TransformUtils {
         return td;
     }
 
+	public static Transform Assign(this Transform transform, TransformData td) {
+
+		transform.position = td.position;
+		transform.localPosition = td.localPosition;
+
+		transform.rotation = td.rotation;
+		transform.localRotation = td.localRotation;
+
+		transform.localScale = td.localScale;
+
+		//transform.parent = td.parent;
+
+		return transform;
+	}
+
 }

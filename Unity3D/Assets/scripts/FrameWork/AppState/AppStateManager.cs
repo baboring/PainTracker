@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace HC
 {
-	public enum eMainState
+	public enum eAppState
 	{
 		None = 0,
 		Splash,
@@ -21,24 +21,24 @@ namespace HC
 
 	public delegate void NotifyRestart();		// 리부팅 알림
 
-    public class MainStateManager : SingletonMB<MainStateManager>
+    public class AppStateManager : SingletonMB<AppStateManager>
 	{
-		public eMainState _currentState = eMainState.None;
-		public eMainState _previousState = eMainState.None;
+		public eAppState _currentState = eAppState.None;
+		public eAppState _previousState = eAppState.None;
 
-		MainStateBase currGameState;
+		AppStateBase currGameState;
 
 		public static NotifyRestart OnNotifyRestart;	// 리부팅 알림
 		
 
-		Dictionary<eMainState, MainStateBase> lstGameState = new Dictionary<eMainState,MainStateBase>();
+		Dictionary<eAppState, AppStateBase> lstGameState = new Dictionary<eAppState,AppStateBase>();
 
-		static public eMainState PreviousState
+		static public eAppState PreviousState
 		{
 			get { return instance._previousState; }
 			private set {instance._previousState = value;}
 		}
-		static public eMainState CurrentState
+		static public eAppState CurrentState
 		{
 			get { return instance._currentState; }
 			private set
@@ -78,12 +78,16 @@ namespace HC
 			PlayerSaveInfo.CreateInstance();
 			PlayerSaveInfo.instance.Load();
 
+			// seq manager
+			SeqManager.instance.Initial();
 
-			AddGameState(eMainState.None, this.gameObject.AddComponent<MainStateNone>());
-			AddGameState(eMainState.Splash, this.gameObject.AddComponent<MainStateSplash>());
-			AddGameState(eMainState.Bootup, this.gameObject.AddComponent<MainStateBootup>());
-            AddGameState(eMainState.Main, this.gameObject.AddComponent<MainStateMain>());
-			AddGameState(eMainState.Menu, this.gameObject.AddComponent<MainStateMenu>());
+
+
+			AddGameState(eAppState.None, this.gameObject.AddComponent<AppStateNone>());
+			AddGameState(eAppState.Splash, this.gameObject.AddComponent<AppStateSplash>());
+			AddGameState(eAppState.Bootup, this.gameObject.AddComponent<AppStateBootup>());
+            AddGameState(eAppState.Main, this.gameObject.AddComponent<AppStateMain>());
+			AddGameState(eAppState.Menu, this.gameObject.AddComponent<AppStateMenu>());
 		}
 
 		private void Initialization()
@@ -109,7 +113,7 @@ namespace HC
 				OnNotifyRestart();
 
 			// 초기상태에서 다시 리셋 하라고 하면 안되지
-			if (CurrentState == eMainState.None) {
+			if (CurrentState == eAppState.None) {
 				Logger.Warning("Duplicate Restart !!");
 				return;
 			}
@@ -123,7 +127,7 @@ namespace HC
 				instance.Initialization();
 
 				// 동작중인 State가 있으면 나와
-				ChangeState(eMainState.None);
+				ChangeState(eAppState.None);
 			}
 
 			// 앱 재시작을 요청하면 앱 버전 체크부터 다시 해야한다.
@@ -155,7 +159,7 @@ namespace HC
 		}
 
 		// 상태 변경
-		static public void ChangeState(eMainState _eGameState)
+		static public void ChangeState(eAppState _eGameState)
 		{
 			// state check
 			if (CurrentState == _eGameState) {
@@ -163,7 +167,7 @@ namespace HC
 				return;
 			}
 
-			MainStateBase prevState;
+			AppStateBase prevState;
 			if (instance.lstGameState.TryGetValue(CurrentState, out prevState)) {
 				if (null != prevState) {
 					prevState.OnClearAll();
@@ -188,7 +192,7 @@ namespace HC
 				currGameState.OnUpdate();
 		}
 
-		static public T Get<T>() where T : MainStateBase
+		static public T Get<T>() where T : AppStateBase
 		{
 			var result = instance.lstGameState.Values.Where(p => (null != p && p.GetType() == typeof(T)));
 			if (result.Count() < 1)
@@ -196,7 +200,7 @@ namespace HC
 			return (T)result.First();
 		}
 
-		void AddGameState(eMainState estate, MainStateBase cmpStateBase)
+		void AddGameState(eAppState estate, AppStateBase cmpStateBase)
 		{
 			cmpStateBase.transform.parent = gameObject.transform;
 			lstGameState.Add(estate, cmpStateBase);

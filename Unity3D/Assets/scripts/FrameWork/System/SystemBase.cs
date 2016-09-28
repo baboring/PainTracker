@@ -35,7 +35,7 @@ namespace HC
 
 		static bool FullScreen {get; set;}
 
-		public static int targetFrameRate = 60;
+		public const int targetFrameRate = 30;
 
 		// Depth order
 		public const float DEPTH_BASE_MESSAGE_BOX = -10;
@@ -216,22 +216,21 @@ namespace HC
 				isIntiailization = true;
 
 				// 해상도 체크 해야지 ( Pc 빌드 이외에는 불필요 )
-				//if (Screen.resolutions.Length > 0) {
-				//	Logger.Log("--------------");
-				//	var lstRes = Screen.resolutions;
-				//	for (int i = 0; i < lstRes.Length; ++i)
-				//		Logger.LogFormat("[{0}] Resolution ( {1} x {2} x {3} )", i, lstRes[i].width, lstRes[i].height, lstRes[i].refreshRate);
-				//	Logger.Log("--------------");
-				//}
+				if (Screen.resolutions.Length > 0) {
+					Logger.Debug("--------------");
+					var lstRes = Screen.resolutions;
+					for (int i = 0; i < lstRes.Length; ++i)
+						Logger.DebugFormat("[{0}] Resolution ( {1} x {2} x {3} )", i, lstRes[i].width, lstRes[i].height, lstRes[i].refreshRate);
+					Logger.Debug("--------------");
+				}
 
 				// Main 에서 하도록 두자..
-				//SystemConfig.SetScreen(Screen.width, Screen.height, SystemConfig.RatioOption.DependWidth, true);
+				SetScreen(Screen.width, Screen.height, RatioOption.DependWidth, true);
 
 				//자동 슬립 모드 방지 ( 실시간 게임일때만 키자 )
 				Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
-				SystemConfig.targetFrameRate = 30;
-				SystemConfig.IsAutoRotate = true;   // 아이폰 4s LandScape 혹시 몰라 넣었다.
+				//SystemConfig.IsAutoRotate = true;   // 아이폰 4s LandScape 혹시 몰라 넣었다.
 
 				Application.targetFrameRate = targetFrameRate;
 

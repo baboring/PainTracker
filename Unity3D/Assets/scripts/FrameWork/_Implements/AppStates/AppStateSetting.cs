@@ -4,11 +4,11 @@ using System;
 
 namespace HC
 {
-    public class MainStateSetting : MainStateBase
+    public class AppStateSetting : AppStateBase
     {
-        static MainStateSetting _instance;
-        static public MainStateSetting instance { get { return _instance; } }
-        MainStateSetting()
+        static AppStateSetting _instance;
+        static public AppStateSetting instance { get { return _instance; } }
+        AppStateSetting()
         {
             Logger.Assert(_instance == null);
             _instance = this;

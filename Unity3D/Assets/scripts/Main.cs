@@ -15,17 +15,18 @@ namespace HC {
 				console.SetVisible(false);
 			}
 
-			MainStateManager.CreateInstance();
+			AppStateManager.CreateInstance();
 
 		}
 
 		// Use this for initialization
 		void Start() {
+			SystemConfig.Initial();
 			OnStartup();
 		}
 
 		public void OnStartup() {
-			MainStateManager.ChangeState(eMainState.Splash);
+			AppStateManager.ChangeState(eAppState.Splash);
 		}
 
 		public void OnClickBackKey() {

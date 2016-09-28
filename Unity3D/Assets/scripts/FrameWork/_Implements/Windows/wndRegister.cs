@@ -45,9 +45,6 @@ namespace HC
 
         public void OnSelectEngine()
         {
-            Debug.Log(UIPopupList.current.value);
-            //engineName = nameArray[selected];
-            //EasyTTSUtil.Initialize(EasyTTSUtil.UnitedStates, UIPopupList.current.value);
         }
     }
 }

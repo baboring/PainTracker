@@ -5,11 +5,11 @@ using System;
 
 namespace HC
 {
-	public class MainStateSplash : MainStateBase
+	public class AppStateSplash : AppStateBase
 	{
-		static MainStateSplash _instance;
-		static public MainStateSplash instance { get { return _instance; } }
-		MainStateSplash() 
+		static AppStateSplash _instance;
+		static public AppStateSplash instance { get { return _instance; } }
+		AppStateSplash() 
 		{
             Logger.Assert(_instance == null);
 			_instance = this;
@@ -31,13 +31,16 @@ namespace HC
 					DestroyObject(SplashScreen.instance.gameObject);
 					LoadingScreen.Load();
 					//SplashScreen.instance = null;
-					MainStateManager.ChangeState(eMainState.Main);
+					AppStateManager.ChangeState(eAppState.Main);
 				};
 			});
 		}
 
 		override public void OnLeave()
 		{
+			VoiceRecognizeMain.CreateInstance();
+			TextToSpeechMain.CreateInstance();
+			PhoneCallHelper.Initialize(gameObject.name);
 
 		}
 

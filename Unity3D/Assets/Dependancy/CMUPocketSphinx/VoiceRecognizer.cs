@@ -31,7 +31,7 @@ namespace CMUPocketSphinx
 		IEnumerator coInitial() {
             yield return Application.RequestUserAuthorization(UserAuthorization.Microphone);
             if (Application.HasUserAuthorization(UserAuthorization.Microphone)) {
-				VoiceRecognizerHelper.Initialize(gameObject.name);
+				VoiceRecognizerHelper.Initialize(this.gameObject);
 			}
 			else {
 
@@ -65,64 +65,35 @@ namespace CMUPocketSphinx
 			}
 		}
 
-		//void AnswerAndRestart(string text) {
-		//	VoiceRecognizerHelper.StopListening();
-		//	if (null != callbackSay)
-		//		callbackSay(text);
-
-		//	//SetTimer(0, 1200, () => {
-		//	//    CMUSphinxAndroid.StartListening(CMUSphinxAndroid.KWS_SEARCH);
-		//	//    //if (text.Equals(SphinxPluginAndroid.BODY_SEARCH))
-		//	//    //    SphinxPluginAndroid._StartListening(text, 10000);
-		//	//    //else if (text.Equals(SphinxPluginAndroid.DIGITS_SEARCH))
-		//	//    //    SphinxPluginAndroid._StartListening(text, 10000);
-		//	//    //else if (text.Equals(SphinxPluginAndroid.PHONE_SEARCH))
-		//	//    //    SphinxPluginAndroid._StartListening(text, 10000);
-		//	//    //else if (text.Equals(SphinxPluginAndroid.FORECAST_SEARCH))
-		//	//    //    SphinxPluginAndroid._StartListening(text, 10000);
-		//	//});
-		//}
-
-
 		public void _OnHypothsisPartial(string text) {
 			if (null != _interrupt) {
 				_interrupt._OnHypothsisPartial(text);
 				return;
 			}
 
-			switch (VoiceRecognizerHelper.CurrentSearchName()) {
-                case VoiceRecognizerHelper.KWS_SEARCH:
-                    if (text.Equals(VoiceRecognizerHelper.KEYPHRASE))
-						VoiceRecognizerHelper.SwitchSearch(VoiceRecognizerHelper.MENU_SEARCH);
-                    break;
-                // select menu
-                case VoiceRecognizerHelper.MENU_SEARCH:
+			//switch (VoiceRecognizerHelper.CurrentSearchName()) {
+   //             case VoiceRecognizerHelper.KWS_SEARCH:
+   //                 if (text.Equals(VoiceRecognizerHelper.KEYPHRASE))
+	//						VoiceRecognizerHelper.SwitchSearch(VoiceRecognizerHelper.MENU_SEARCH);
+   //                 break;
+   //             // select menu
+   //             case VoiceRecognizerHelper.MENU_SEARCH:
                     
-                    if (text.Equals(VoiceRecognizerHelper.BODY_SEARCH))
-                        VoiceRecognizerHelper.SwitchSearch(VoiceRecognizerHelper.BODY_SEARCH);
-                    else if (text.Equals(VoiceRecognizerHelper.DIGITS_SEARCH))
-                        VoiceRecognizerHelper.SwitchSearch(VoiceRecognizerHelper.DIGITS_SEARCH);
-                    else if (text.Equals(VoiceRecognizerHelper.FORECAST_SEARCH))
-                        VoiceRecognizerHelper.SwitchSearch(VoiceRecognizerHelper.FORECAST_SEARCH);
-                    else if (text.Equals(VoiceRecognizerHelper.GREET_SEARCH))
-                        VoiceRecognizerHelper.SwitchSearch(VoiceRecognizerHelper.GREET_SEARCH);
-                    //switch(text) {
-                    //    case SphinxPluginAndroid.BODY_SEARCH:
-                    //    case SphinxPluginAndroid.DIGITS_SEARCH:
-                    //    case SphinxPluginAndroid.PHONE_SEARCH:
-                    //    case SphinxPluginAndroid.FORECAST_SEARCH:
-                    //    case SphinxPluginAndroid.GREET_SEARCH:
-                    //        AnswerAndStart(text);
-                    //        break;
-                    //}
-
-                    break;
-                case VoiceRecognizerHelper.BODY_SEARCH:
-                    VoiceRecognizerHelper.StopListening();
-                    break;
-                default:
-                    break;
-            }
+   //                 if (text.Equals(VoiceRecognizerHelper.BODY_SEARCH))
+   //                     VoiceRecognizerHelper.SwitchSearch(VoiceRecognizerHelper.BODY_SEARCH);
+   //                 else if (text.Equals(VoiceRecognizerHelper.DIGITS_SEARCH))
+   //                     VoiceRecognizerHelper.SwitchSearch(VoiceRecognizerHelper.DIGITS_SEARCH);
+   //                 else if (text.Equals(VoiceRecognizerHelper.FORECAST_SEARCH))
+   //                     VoiceRecognizerHelper.SwitchSearch(VoiceRecognizerHelper.FORECAST_SEARCH);
+   //                 else if (text.Equals(VoiceRecognizerHelper.GREET_SEARCH))
+   //                     VoiceRecognizerHelper.SwitchSearch(VoiceRecognizerHelper.GREET_SEARCH);
+   //                 break;
+   //             case VoiceRecognizerHelper.BODY_SEARCH:
+   //                 VoiceRecognizerHelper.StopListening();
+   //                 break;
+   //             default:
+   //                 break;
+   //         }
         }
 
 
@@ -131,16 +102,15 @@ namespace CMUPocketSphinx
 				_interrupt._OnHypothsisFinal(text);
 				return;
 			}
-			Debug.Log("_OnHypothsisResult::" + text);
 
-            switch (VoiceRecognizerHelper.CurrentSearchName()) {
-                case VoiceRecognizerHelper.BODY_SEARCH:
-                    //SphinxPluginAndroid._SwitchSearch("_");
-                    //AnswerAndRestart(text);
-                    break;
-                default:
-                    break;
-            }
+            //switch (VoiceRecognizerHelper.CurrentSearchName()) {
+            //    case VoiceRecognizerHelper.BODY_SEARCH:
+            //        //SphinxPluginAndroid._SwitchSearch("_");
+            //        //AnswerAndRestart(text);
+            //        break;
+            //    default:
+            //        break;
+            //}
 
         }
         public void _OnBeginningOfSpeech(string msg) {
@@ -155,9 +125,9 @@ namespace CMUPocketSphinx
 				return;
 			}
 		}
-		public void _OnStopLisnening(string msg) {
+		public void _OnStopListening(string msg) {
 			if (null != _interrupt) {
-				_interrupt._OnStopLisnening(msg);
+				_interrupt._OnStopListening(msg);
 				return;
 			}
 		}
@@ -167,13 +137,25 @@ namespace CMUPocketSphinx
 				return;
 			}
 		}
+		public void _OnCancelListening(string msg) {
+			if (null != _interrupt) {
+				_interrupt._OnCancelListening(msg);
+				return;
+			}
+		}
+		public void _OnSwitchSearch(string msg) {
+			if (null != _interrupt) {
+				_interrupt._OnSwitchSearch(msg);
+				return;
+			}
+		}
 		public void _OnTimeout(string msg) {
 			if (null != _interrupt) {
 				_interrupt._OnTimeout(msg);
 				return;
 			}
 
-			VoiceRecognizerHelper.SwitchSearch(VoiceRecognizerHelper.KWS_SEARCH);
+			VoiceRecognizerHelper.SwitchSearch(VoiceRecognizerHelper.SEARCH_KWS);
         }
 
         public void Destroy() {

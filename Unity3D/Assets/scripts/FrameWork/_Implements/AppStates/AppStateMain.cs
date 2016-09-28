@@ -5,11 +5,11 @@ using System.Collections;
 
 namespace HC
 {
-	public class MainStateMain : MainStateBase
+	public class AppStateMain : AppStateBase
 	{
-		static MainStateMain _instance;
-		static public MainStateMain instance { get { return _instance; } }
-		MainStateMain()
+		static AppStateMain _instance;
+		static public AppStateMain instance { get { return _instance; } }
+		AppStateMain()
 		{
             Logger.Assert(_instance == null);
 			_instance = this;
@@ -40,9 +40,7 @@ namespace HC
 			};
 
 			// Window Load가 없으니 바로 완료
-			if (MainStateManager.PreviousState == eMainState.Splash) {
-				VoiceRecognizeMain.CreateInstance();
-				TextToSpeechMain.CreateInstance();
+			if (AppStateManager.PreviousState == eAppState.Splash) {
 				StartCoroutine(LoadSceneProcess(()=> complete(true)));
 				return;
 			}
@@ -73,10 +71,10 @@ namespace HC
 					yield return null;
 
 				// wait for initializing voice recognizer
-				while(!VoiceRecognizeMain.instance.IsInstalled)
+				while(!VoiceRecognizeMain.IsInstalled)
 					yield return null;
 
-				while (!TextToSpeechMain.instance.IsInstalled)
+				while (!TextToSpeechMain.IsInstalled)
 					yield return null;
 				
 

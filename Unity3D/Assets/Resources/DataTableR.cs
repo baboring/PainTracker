@@ -78,10 +78,12 @@ namespace HC {
 							R.Seq newOne = new R.Seq() {
 								state = rec.tContents[0].ToEnum<Seq.eState>(),
 								speak = rec.tContents[1],
-								condition = rec.tContents[2],
-								cond_set = rec.tContents[3],
-								elseCase = rec.tContents[4],
-								next = rec.tContents[5].ToEnum<Seq.eState>(),
+								lookat = rec.tContents[2],
+								cases = rec.tContents[3],
+								condition = rec.tContents[4],
+								cond_set = rec.tContents[5],
+								elseCase = rec.tContents[6],
+								next = rec.tContents[7].ToEnum<Seq.eState>(),
 							};
 							dic.Add(newOne.state, newOne);
 						}
@@ -302,6 +304,8 @@ namespace HC {
 
 			public eState state;
 			public string speak;
+			public string lookat;
+			public string cases;
 			public string condition;
 			public string cond_set;
 			public string elseCase;
@@ -315,6 +319,8 @@ namespace HC {
 				AskHowDensity,
 				AskConfirm,
 				Finish,
+				AskCallup,
+				CallupEmergency,
 			}
 
 

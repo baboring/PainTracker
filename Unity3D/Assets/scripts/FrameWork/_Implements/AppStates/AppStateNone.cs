@@ -5,11 +5,11 @@ using System;
 
 namespace HC
 {
-	public class MainStateNone : MainStateBase
+	public class AppStateNone : AppStateBase
 	{
-		static MainStateNone _instance;
-		static public MainStateNone instance { get { return _instance; } }
-		MainStateNone()
+		static AppStateNone _instance;
+		static public AppStateNone instance { get { return _instance; } }
+		AppStateNone()
 		{
             Logger.Assert(_instance == null);
 			_instance = this;

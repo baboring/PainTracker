@@ -2,10 +2,21 @@
 using System;
 
 namespace HC {
-    public class TextToSpeechMain : MonoBehaviour, OnTTSListener {
 
-		public Action<string> callbackSpeakStart;
-		public Action<string> callbackSpeakDone;
+	public enum SpeechState {
+		None = 0,
+		TrySpeech,
+		Start,
+		Done,
+	}
+
+	public class TextToSpeechMain : MonoBehaviour, OnTTSListener {
+
+		public static Action<string> callbackSpeakStart;
+
+		public static SpeechState speechSt { get; set; }
+		public static bool IsInstalled { get; private set; }
+
 
 		public static TextToSpeechMain instance;
 		public static void CreateInstance() {
@@ -13,9 +24,10 @@ namespace HC {
 				string _currentGUID = System.Guid.NewGuid().ToString();
 				GameObject obj = new GameObject("TextToSpeechMain(" + _currentGUID + ")");
 				instance = obj.AddComponent<TextToSpeechMain>();
+				DontDestroyOnLoad(obj);
+
 			}
 		}
-		public bool IsInstalled { get; private set; }
 
 		// initialization
 		void Awake() {
@@ -30,8 +42,13 @@ namespace HC {
 
 		// Utter Speak
 		public static void Speak(string text) {
-			Logger.Assert(instance.IsInstalled, "Not Initialized TTS Engine");
+			speechSt = SpeechState.TrySpeech;
+			Logger.Assert(IsInstalled, "Not Initialized TTS Engine");
 			TTSHelper.SpeechFlush(text);
+			if (Application.platform == RuntimePlatform.WindowsEditor) {
+				Timer.SetTimer(500, (id) => instance._OnStart(text));
+				Timer.SetTimer(1000, (id) => instance._OnDone(text));
+			}
 		}
 		// Utter Speak
 		public static void SpeakFormat(string szFormat, params object[] p) {
@@ -54,14 +71,13 @@ namespace HC {
 
 		public void _OnStart(string msg) {
 			Logger.Debug(msg);
+			speechSt = SpeechState.Start;
 			if (null != callbackSpeakStart)
 				callbackSpeakStart(msg);
 		}
 
 		public void _OnDone(string msg) {
-			Logger.Debug(msg);
-			if (null != callbackSpeakDone)
-				callbackSpeakDone(msg);
+			speechSt = SpeechState.Done;
 		}
 
 		public void _OnError(string msg) {

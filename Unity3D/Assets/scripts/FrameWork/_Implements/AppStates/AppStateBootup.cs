@@ -5,13 +5,13 @@ using System;
 
 namespace HC
 {
-	public class MainStateBootup : MainStateBase
+	public class AppStateBootup : AppStateBase
 	{
-		static MainStateBootup _instance;
-		static public MainStateBootup instance { get { return _instance; } }
-		MainStateBootup() 
+		static AppStateBootup _instance;
+		static public AppStateBootup instance { get { return _instance; } }
+		AppStateBootup() 
 		{
-			MainStateBootup._instance = this;
+			AppStateBootup._instance = this;
 		}
 
 		void Awake()
@@ -41,8 +41,8 @@ namespace HC
 			IsPrearedState = true;
 
 			// Logon 상태로 이동
-			if (MainStateManager.CurrentState != eMainState.Patch)
-				MainStateManager.ChangeState(eMainState.Patch);
+			if (AppStateManager.CurrentState != eAppState.Patch)
+				AppStateManager.ChangeState(eAppState.Patch);
 		}
 
 		override public void OnLeave()

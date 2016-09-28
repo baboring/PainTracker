@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using CMUPocketSphinx;
 
 namespace HC
 {
@@ -10,6 +11,7 @@ namespace HC
 		public GameObject objBtnExtra;
 		public GameObject objBtnHelp;
 
+		bool isVisible = false;
 		// Use this for initialization
 		protected override void Awake()
         {
@@ -17,27 +19,31 @@ namespace HC
 
 			base.Awake();
 
-			// go to main scene
-            ButtonHandler.CreateHandle(0, objBtnClose, true, true, (btn) => {
-				MainStateManager.ChangeState(eMainState.Main);
+			// Help button
+			ButtonHandler.CreateHandle(0, objBtnHelp, true, true, (btn) => {
+				MessageBoxManager.Show("Help","This is Help MessageBox");
+				isVisible = !isVisible;
+				WindowManager.GetWindow<wndMain>().SetVisible(isVisible);
 			});
 
 			// open Setting window
 			ButtonHandler.CreateHandle(0, objBtnSetting, true, true, (btn) => {
 				WindowManager.OpenPopup(WndID.WndSetting);
+				//test mode
+				//VoiceRecognizeMain.instance.listenSt = ListenState.Stop;
+				//TextToSpeechMain.instance.callbackSpeakDone("");
 			});
 
 			// extra button
 			ButtonHandler.CreateHandle(0, objBtnExtra, true, true, (btn) => {
-				//TTSHelper.OpenTTSSetting();
-				MessageBoxManager.Show("Hello", "May I help you");
+				int id = (int)CameraController.instance.zoom_id;
+				CameraController.instance.SetCameraView((CAMERA_ID)(++id % 4));
+			});
+			// go to main scene
+			ButtonHandler.CreateHandle(0, objBtnClose, true, true, (btn) => {
+				AppStateManager.ChangeState(eAppState.Main);
 			});
 
-			// Help button
-			ButtonHandler.CreateHandle(0, objBtnHelp, true, true, (btn) => {
-				TextToSpeechMain.Speak(R.Speeches.eKey.AskHelp2);
-				WindowManager.GetWindow<wndMain>().objHuman.Motion("shaking_hands_2");
-			});
 		}
 
 		// override

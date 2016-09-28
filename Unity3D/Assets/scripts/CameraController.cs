@@ -2,11 +2,11 @@
 using System.Collections;
 
 namespace HC {
-    public enum ZOOM_ID {
-        HEAD,
+    public enum CAMERA_ID {
+		NONE,
+		HEAD,
         THIGH,
         STOMACK,
-        NONE,
     }
 
     public class CameraController : ManualSingletonMB<CameraController>
@@ -14,8 +14,12 @@ namespace HC {
         /// <summary>
         /// camera
         /// </summary>
+		/// 
         public LookAtTarget camLookAt;
-        public Transform posBody;
+		public MoveToTarget camMover;
+		public Camera cam;
+
+		public Transform posBody;
 
         public Transform posHead;
         public Transform posCameraHead;
@@ -33,94 +37,127 @@ namespace HC {
 
 		void Start() {
 
-			Initial();
+			initCamTrans = cameraTrans.Clone();
+
+			camMover.target = cameraTrans;
+		}
+		Transform centerTrans {
+			get {
+				this.transform.position = initCamTrans.position;
+				return this.transform;
+			}
 		}
 
-		TransformData td;
-        void Initial() {
-            td = cameraTrans.Clone();
-        }
-
-
-        public string myName = "Benjamin";
-        public void OnSay() {
-
-            // test code
-            //int id = (int)zoom_id;
-            //if (zoom_mode_IN)
-            //    SetZoomInOut((ZOOM_ID)(++id % 3), false);
-            //else
-            //    SetZoomInOut((ZOOM_ID)(id % 3), true);
-
-            //string saySomething = string.Format("My name is %s.", uiInput.value);
-   //         if (uiInput.value.Length > 0)
-   //             myName = uiInput.value;
-			//WindowManager.GetWindow<wndMain>().objHuman.OnSay("My name is " + myName, "shaking_hands_2");
-   //         SetZoomInOut(ZOOM_ID.NONE, false);
-        }
-        // Update is called once per frame
-        void Update() {
-
-            UpdateZoomInOut();
-        }
-
+		TransformData initCamTrans;
 
         public Transform cameraTrans;
 
-        bool zoom_mode_IN = false;
-        ZOOM_ID zoom_id = 0;
+        public CAMERA_ID zoom_id = CAMERA_ID.NONE;
         float zoom_speed = 4.0f;
 
 
+		public void SetLookatPart(TouchPart which) {
 
-        public void SetZoomInOut(ZOOM_ID id, bool bZoomIn, float speed = 4.0f) {
+			camLookAt.target = (null != which)? which.transform : posBody;
+			if (which != null)
+				this.transform.localPosition = camLookAt.target.localPosition + new Vector3(0, 20, -150);
+			else
+				this.transform.localPosition = initCamTrans.localPosition;
+			camMover.target = this.transform;
+		}
 
-            if (bZoomIn) {
-                switch (id) {
-                    case ZOOM_ID.HEAD:
-                        camLookAt.target = posHead;
-                        break;
-                    case ZOOM_ID.THIGH:
-                        camLookAt.target = posThigh;
-                        break;
-                    case ZOOM_ID.STOMACK:
-                        camLookAt.target = posStomach;
-                        break;
-                }
+		public void SetCameraView(CAMERA_ID id, float speed = 4.0f) {
+
+            switch (id) {
+                case CAMERA_ID.HEAD:
+                    camLookAt.target = posHead;
+					camMover.target = posCameraHead;
+					break;
+                case CAMERA_ID.THIGH:
+                    camLookAt.target = posThigh;
+					camMover.target = posCameraThigh;
+					break;
+                case CAMERA_ID.STOMACK:
+                    camLookAt.target = posStomach;
+					camMover.target = posCameraStomach;
+					break;
+				case CAMERA_ID.NONE:
+					camLookAt.target = posBody;
+					this.transform.localPosition = initCamTrans.localPosition;
+					camMover.target = this.transform;
+					break;
             }
-            else {
-                camLookAt.target = posBody;
-            }
-
             zoom_id = id;
-            zoom_mode_IN = bZoomIn;
             zoom_speed = speed;
         }
 
-        void UpdateZoomInOut() {
+		// Update is called once per frame
+		void UpdateLate() {
 
-            if (zoom_mode_IN) {
-                Vector3 target = Vector3.zero;
-                switch (zoom_id) {
-                    case ZOOM_ID.HEAD:
-                        target = posCameraHead.position;
-                        break;
-                    case ZOOM_ID.THIGH:
-                        target = posCameraThigh.position;
-                        break;
-                    case ZOOM_ID.STOMACK:
-                        target = posCameraStomach.position;
-                        break;
-                }
+			// 
+			if (Input.GetMouseButtonUp(0)) {
+				OnMouseUp();
+			}
+		}
 
-                if (!cameraTrans.position.Equals(target))
-                    cameraTrans.position = Vector3.Slerp(cameraTrans.position, target, Time.deltaTime * zoom_speed);
-            }
-            else {
-                if (!cameraTrans.position.Equals(td.position))
-                    cameraTrans.position = Vector3.Slerp(cameraTrans.position, td.position, Time.deltaTime * zoom_speed);
-            }
-        }
+		void Update() {
+			if (null == cam)
+				return;
+			RaycastHit hit;
+			if (!Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit))
+				return;
+
+			MeshCollider meshCollider = hit.collider as MeshCollider;
+			if (meshCollider == null || meshCollider.sharedMesh == null)
+				return;
+
+			Mesh mesh = meshCollider.sharedMesh;
+			Vector3[] vertices = mesh.vertices;
+			int[] triangles = mesh.triangles;
+			Vector3 p0 = vertices[triangles[hit.triangleIndex * 3 + 0]];
+			Vector3 p1 = vertices[triangles[hit.triangleIndex * 3 + 1]];
+			Vector3 p2 = vertices[triangles[hit.triangleIndex * 3 + 2]];
+			Transform hitTransform = hit.collider.transform;
+			p0 = hitTransform.TransformPoint(p0);
+			p1 = hitTransform.TransformPoint(p1);
+			p2 = hitTransform.TransformPoint(p2);
+			Debug.DrawLine(p0, p1);
+			Debug.DrawLine(p1, p2);
+			Debug.DrawLine(p2, p0);
+		}
+
+		void OnMouseUp() {
+			/*
+				Ray ray = cam.main.ScreenPointToRay(Input.mousePosition);
+				RaycastHit hit;
+				if (Physics.Raycast(ray, out hit)) {
+					//clear edge colors
+					for (int i = 0; i < m_edgePoints.Count; i++)
+						m_edges[i].GetComponent<LineRenderer>().renderer.material.color = Color.red;
+					//find vertices of the triangle hit                
+					Mesh m = (hit.collider as MeshCollider).sharedMesh;
+					Vector3[] vertices = new Vector3[3] { m.vertices[m.triangles[3 * hit.triangleIndex]],
+					 m.vertices[m.triangles[3 * hit.triangleIndex + 1]], m.vertices[m.triangles[3 * hit.triangleIndex + 2]]
+				 };
+
+					Debug.Log(string.Format("Triangle: {0}; {1}; {2}", vertices[0], vertices[1], vertices[2]));
+					//find selected face
+					foreach (var face in m_faces) {
+						if (face.Contains(vertices[0]) && face.Contains(vertices[1]) && face.Contains(vertices[2])) {
+							Debug.Log("face: " + string.Join("; ", (from v in face select v.ToString()).ToArray()));
+							//color edges of the face
+							for (int i = 0; i < m_edgePoints.Count; i++) {
+								if (face.Contains(m_edgePoints[i][0]) && face.Contains(m_edgePoints[i][1])) {
+									m_edges[i].GetComponent<LineRenderer>().renderer.material.color = Color.blue;
+									Debug.Log(string.Format("Edge: {0}; {1}", m_edgePoints[i][0], m_edgePoints[i][1]));
+								}
+							}
+							break;
+						}
+					}
+				}
+			*/
+		}
 
 	}
 

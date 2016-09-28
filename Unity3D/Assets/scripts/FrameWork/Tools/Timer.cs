@@ -4,7 +4,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Timer : MonoBehaviour {
+using HC;
+
+public class Timer : SingletonMB<Timer> {
 
 	/// <summary>
 	/// Timer 
@@ -15,13 +17,13 @@ public class Timer : MonoBehaviour {
 		lstIimer.RemoveAll(item => item.IsTimeOver);
 	}
 
-	void Awake() {
+	protected override void Awake() {
 		InvokeRepeating("decreaseTimeRemaining", 1, 0.1f);
 	}
 
 	class TIMER {
 		public int id;
-		public Action callback;
+		public Action<int> onListener;
 		public int remainTime;
 
 		public bool IsTimeOver { get { return (remainTime <= 0); } }
@@ -29,8 +31,8 @@ public class Timer : MonoBehaviour {
 			remainTime -= time;
 			//Debug.Log(string.Format("time {0} {1}",id,remainTime));
 			if (IsTimeOver) {
-				callback();
-				callback = null;
+				onListener(id);
+				onListener = null;
 				return true;
 			}
 			return false;
@@ -39,27 +41,23 @@ public class Timer : MonoBehaviour {
 	List<TIMER> lstIimer = new List<TIMER>();
 
 	static int time_uid = 0;
-	void SetTimer(int id, int ms, Action listener) {
-		lstIimer.Add(new TIMER() {
-			id = time_uid++,
-			remainTime = ms,
-			callback = listener
-		});
-	}
+	public static int SetTimer(int msElapse, Action<int> listener) {
 
-
-
-	// Use this for initialization
-	void Start () {
-		//SphinxPluginAndroid._StopListening();
-		SetTimer(0, 4000, () => {
-			//CMUSphinxAndroid.StartListening(CMUSphinxAndroid.BODY_SEARCH, 10000);
+		instance.lstIimer.Add(new TIMER() {
+			id = ++time_uid,
+			remainTime = msElapse,
+			onListener = listener
 		});
 
+		return time_uid;
 	}
 
-	// Update is called once per frame
-	void Update () {
+	// cancel timer
+	public static void CancelTimer(int id) {
+		int idx = instance.lstIimer.FindIndex(va => va.id == id);
+		if(idx > -1)
+			instance.lstIimer.RemoveAt(idx);
+	}
+
 	
-	}
 }

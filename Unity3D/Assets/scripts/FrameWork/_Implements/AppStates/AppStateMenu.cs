@@ -4,11 +4,11 @@ using System;
 
 namespace HC
 {
-    public class MainStateMenu : MainStateBase
+    public class AppStateMenu : AppStateBase
     {
-        static MainStateMenu _instance;
-        static public MainStateMenu instance { get { return _instance; } }
-		MainStateMenu()
+        static AppStateMenu _instance;
+        static public AppStateMenu instance { get { return _instance; } }
+		AppStateMenu()
         {
             Logger.Assert(_instance == null);
             _instance = this;
