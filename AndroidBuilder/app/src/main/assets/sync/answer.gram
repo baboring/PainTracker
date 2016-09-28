@@ -1,0 +1,18 @@
+#JSGF V1.0;
+
+grammar answer;
+
+public <item> = 
+	yes |
+	no |
+	sure |
+	of course |
+	nothing |
+	anything |
+	yeah |
+	great |
+	all right |
+	thank you |
+    that's it |
+    that's all;
+

@@ -1,0 +1,24 @@
+#JSGF V1.0;
+
+grammar pain;
+
+public <item> = 
+	aching |
+	cramping |
+	fearful |
+	gnawing |
+	heavy |
+	hot |
+	burning |
+	sharp |
+	shooting |
+	sickening |
+	splitting |
+	stabbing |
+	punishing |
+	cruel |
+	tender |
+	throbbing |
+	tiring |
+	exhausting |
+	headache ;

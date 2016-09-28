@@ -19,7 +19,6 @@ android {
 }
 
 dependencies {
-    compile files('libs/EasyTTS.jar')
     compile files('libs/PocketSphinx-ForUnity3d.jar')
     compile files('libs/pocketsphinx-android-5prealpha-nolib.jar')
     compile files('libs/unity-classes.jar')

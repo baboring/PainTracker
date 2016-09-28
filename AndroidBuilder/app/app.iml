@@ -107,7 +107,6 @@
     <orderEntry type="jdk" jdkName="Android API 23 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="pocketsphinx-android-5prealpha-nolib" level="project" />
-    <orderEntry type="library" exported="" name="EasyTTS" level="project" />
     <orderEntry type="library" exported="" name="unity-classes" level="project" />
     <orderEntry type="library" exported="" name="PocketSphinx-ForUnity3d" level="project" />
   </component>

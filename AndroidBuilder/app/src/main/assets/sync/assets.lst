@@ -1,5 +1,7 @@
+answer.gram
 body.gram
 cmudict-en-us.dict
+command.gram
 digits.gram
 en-us-ptm/README
 en-us-ptm/feat.params
@@ -11,4 +13,7 @@ en-us-ptm/transition_matrices
 en-us-ptm/variances
 greet.gram
 menu.gram
+number_0-10.gram
+pain.gram
+player.gram
 weather.dmp

@@ -1,0 +1,11 @@
+#JSGF V1.0;
+
+grammar command;
+
+<polite> = please;
+<endPolite> = [ please | thanks | thank you ];
+<command> = ( <call_up> | <inform> );
+<call_up> = [call | make] [to | up | a | the] ( emergency [number] | phone call);
+<inform> = [have | catch] [ a | the ] (cold | headache | stomach ache | sharp pain);
+
+public <free_command> = <command> <endPolite>;
