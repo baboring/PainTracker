@@ -4,6 +4,11 @@ Tracking personal pains of own body
 ## System Requirements
 Unity 2017.1.0 or later versions. Feel free to try older version
 
+## Voice recognition
+Using pocketsphinx voice recognition ( inside build )
+
+## Data based project
+Using Excel file and CSV ( import & export )
 
 ![code](http://baboring.onlinewebshop.net/_www_homepage/public/images/talk_to_your_pain_2.jpg)
 ![code](http://baboring.onlinewebshop.net/_www_homepage/public/images/talk_to_your_pain_1.jpg)
