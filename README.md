@@ -1,4 +1,4 @@
-# PainTrackerInSpeaking
+# PainTracker by voice command
 Tracking personal pains of own body by voice command
 
 ## System Requirements
