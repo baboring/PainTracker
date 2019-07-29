@@ -1,5 +1,5 @@
 # PainTrackerInSpeaking
-Tracking personal pains of own body
+Tracking personal pains of own body by voice command
 
 ## System Requirements
 Unity 2017.1.0 or later versions. Feel free to try older version
