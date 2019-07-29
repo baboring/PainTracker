@@ -5,7 +5,9 @@ Tracking personal pains of own body
 Unity 2017.1.0 or later versions. Feel free to try older version
 
 
-![code](https://github.com/baboring/MineField/blob/master/Docs/sample.jpg)
+![code](http://baboring.onlinewebshop.net/_www_homepage/public/images/talk_to_your_pain_2.jpg)
+![code](http://baboring.onlinewebshop.net/_www_homepage/public/images/talk_to_your_pain_3.jpg)
+![code](http://baboring.onlinewebshop.net/_www_homepage/public/images/talk_to_your_pain_4.jpg)
 
 
 ## License
